@@ -1,0 +1,26 @@
+클라이언트와 서버
+2.서버의 종류
+
+2-1 Email server - 이메일 제공
+2-2 File server - 파일 제공
+2-3 Web server - 거의 모든것 제공
+
+3.서버의 포트
+1대의 pc에 여러개의 서버가 존재하기 때문에 ip주소만으로는 어떤서버가 요청했는지 알수 없어서 그안에 포트번호가 필요하다
+포트 번호로 어떤 서버에대한 요청인지 알 수 있다. 한 포트에는 한 서버만 연결 가능(Listening이라 한다)
+0~1023까지는 예약된 포트 그외만 사용가능
+
+4.웹 애플리케이션 서버(WAS)란?
+Application은 Program이다.
+업데이트의 용이성 때문에 WAS사용한다 1곳만 업데이트하면 되기 때문에 
+
+5.Tomcat의 내부 구조
+서버로 들어가서 요청하면 8080포트를 통해서 접속하고나면 Thread들이 기다리고 있다.
+톰켓 서버안에는 서비스가 있다. 서비스 안에는 Connector가 있다. 어떤 요청이냐에 따라 처리할 Connector가 다르다.
+그 다음엔 Connector가 Engine(Catalina)에게 요청을한다. Engine안에는 Host가 있다(여러 개의 호스트가 존재할 수 있음, 보통은 한개)
+Host안에 Context가 있다(여러 개의 컨텍스트 존재 가능). Context는 하나의 Web Application이다. STS Project가 Context라고 
+보면 된다. Context안에 Servlet 존재! Servlet은 작은 서버 프로그램이라는 뜻.
+
+Thread pool은 스레드들을 요청이 오기 전에 미리 만들어 놓는것.
+그중에 요청을 처리하고 있지않은애가 받아서 요청온 요구사항에 따라서 커넥터에 꼽고 엔진에 넣는다.
+Dispatcher Servlet이 컨트롤러의 메인메서드를 호출한다!
