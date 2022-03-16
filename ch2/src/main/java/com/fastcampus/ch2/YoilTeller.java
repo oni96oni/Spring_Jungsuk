@@ -26,7 +26,7 @@ public class YoilTeller {
 		int mm = Integer.parseInt(month);
 		int dd = Integer.parseInt(day);
 
-		// 2. 처리(작업)
+		// 2. 처리(작업) 요일계산하는 부분
 		Calendar cal = Calendar.getInstance();
 		cal.set(yyyy, mm - 1, dd);
 
