@@ -1,0 +1,9 @@
+src - main - webapp - WEB-INF - spring - appServelt - servlet-context.xml 파일은 web관련 설정파일
+src - main - webapp - WEB-INF - spring - root-context.xml 파일은 non web관련 설정파일
+
+폼태그에 각각의 타입은 text ,password 등 다양
+
+회원가입 누르면 폼이 여기서는 자기자신한테 전송되어서 그냥 refresh됬음 
+
+js에서 나온 Templet Literal이 있다 EL과 동일 대신 EL은 서버에서  템플릿리터럴은 브라우저에서 돌아간다
+서버가 먼저 돌아가고 그다음에 브라우저가 돌아간다 그래서 프로그램이 EL먼저 인식

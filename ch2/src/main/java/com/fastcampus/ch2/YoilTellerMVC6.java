@@ -3,32 +3,42 @@ package com.fastcampus.ch2;
 import java.util.Calendar;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class YoilTellerMVC4 {
+public class YoilTellerMVC6 {
 	@ExceptionHandler(Exception.class)
-	public String catcher(Exception ex) {
+	public String catcher(Exception ex, BindingResult result) {
+		System.out.println("result :" + result);
+		FieldError error = result.getFieldError();
+		
+		System.out.println("code = "+error.getCode());
+		System.out.println("field = "+error.getField());
+		System.out.println("defaultMessage = "+error.getDefaultMessage());
+		
 		ex.printStackTrace();
 		return "yoilError";
 	}
 	
-    @RequestMapping("/getYoilMVC4") // http://localhost/ch2/getYoilMVC4
-    public String main(MyDate date, Model model) {
- 
+    @RequestMapping("/getYoilMVC6") // http://localhost/ch2/getYoilMVC6
+//    public String main(@ModelAttribute("myDate")MyDate date, Model model) { 아래와 동일
+    	public String main(MyDate date, BindingResult result) {
+    	System.out.println("result :" + result);
+    	
         // 1. 유효성 검사
     	if(!isValid(date)) 
     		return "yoilError";  // 유효하지 않으면, /WEB-INF/views/yoilError.jsp로 이동
     	
         // 2. 처리
-    	char yoil = getYoil(date);
+//    	char yoil = getYoil(date);
 
         // 3. Model에 작업 결과 저장
-        model.addAttribute("Mydate", date);
-        model.addAttribute("yoil", yoil);
+//        model.addAttribute("Mydate", date);
+//        model.addAttribute("yoil", yoil);
         
         // 4. 작업 결과를 보여줄 View의 이름을 반환
         return "yoil"; // /WEB-INF/views/yoil.jsp
@@ -38,7 +48,7 @@ public class YoilTellerMVC4 {
     	return isValid(date.getYear(), date.getMonth(), date.getDay());
 	}
 
-	private char getYoil(MyDate date) {
+	private @ModelAttribute char getYoil(MyDate date) {
 		return getYoil(date.getYear(), date.getMonth(), date.getDay());
 	}
 
