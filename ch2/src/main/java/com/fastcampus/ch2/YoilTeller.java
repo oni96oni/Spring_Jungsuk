@@ -30,7 +30,7 @@ public class YoilTeller {
 		Calendar cal = Calendar.getInstance();
 		cal.set(yyyy, mm - 1, dd);
 
-		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK); //1:일요일, 2:월요일 ...
 		char yoil = " 일월화수목금토".charAt(dayOfWeek);
 
 		// 3. 출력
