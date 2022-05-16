@@ -1,0 +1,12 @@
+HTTP 요청과 응답
+	1.HttpServletRequest
+		url을 이용해서 요청을 한다음에 HttpServletRequest, 즉 서블릿(톰캣)이 요청을 받아서 객체로 만들어서 메인메서드의 매개변수로 넘겨준다.
+		
+	2.HttpServletRequest의 메서드
+		getScheme() : 브라우저에 입력한 URL, http해당
+		getServerName() : ip주소
+		자세한건 RequestInfo.java 참조
+		
+		구분자는 &를 사용한다.
+	3.
+		

@@ -1,0 +1,21 @@
+@GetMapping,@PostMapping
+	@RequestMapping 대신 @GetMapping, @PostMapping 사용가능
+	URL이 같으면 맵핑충돌이 나는데 메소드가 다르면 충돌이 발생하지 않는다! 
+	
+	2.클래스에 붙이는 @RequestMapping
+		맵핑될 URL의 공통 부분을 @RequestMapping으로 클래스에 적용
+	
+	3.@RequestMapping의 URL패턴
+		?는 한글자, *는 여러글자, **는 하위경로 포함. 배열로 여러 패턴 지정
+		URL패턴 - @WebServlet : 서블릿
+			   - @RequestMapping : 스프링 
+		우선순위가 있다. 정확히 일치 - 경로 맵핑 - 확장자 맵핑 
+	4.URL인코딩 - 퍼센트 인코딩
+	 	URL에 포함된 non-ASCII문자를 문자코드(16진수) 문자열로 변환
+	 	왜 이렇게해? 서버요청이왔을때 그 요청이 어떤OS인지 어떤 인코딩인지 모르기때문에
+	 	url에 쓰이는 문자는 모두 아스키여야한다.
+	 	문자코드를 문자열로(인코딩) 문자열을 문자코드로(디코딩)
+	 	URL인코딩 은 BASE64와 전혀 다르다.Base64는 6비트씩 끊어서 변환하는것 즉, 바이너리데이터를 텍스트로변환
+	 	필터가 전처리 역할을 해주어서 DS(Dispatcher Servlet)가 요청을 받기전에 한글처리를 해주는것!
+	 	
+	5.

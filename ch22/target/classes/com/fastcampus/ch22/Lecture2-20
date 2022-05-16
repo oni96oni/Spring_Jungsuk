@@ -1,0 +1,4 @@
+@GetMapping,@PostMapping
+	get방식으로 회원가입을 못하게 막을거야! 도메인으로 가입가능하기에 무분별한 회원가입이 가능
+	
+	redirect는 재요청의 의미

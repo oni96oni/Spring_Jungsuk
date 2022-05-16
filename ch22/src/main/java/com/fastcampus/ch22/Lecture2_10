@@ -1,0 +1,11 @@
+관심사의 분리,MVC패턴-이론
+5.modelAndView
+	args에다가 Model생성안해주면 따로 ModelAndView mv = new ModelAndView(); 이렇게 생성해줘야해
+	결과저장하고 그다음에 뷰지정하고 리턴해준다 mv를! 그러면 이제 뷰한테 전달해준다. 결국 똑같은것! Model생성해주나 안해주나 
+	ModelAndView는 잘안쓰고 반환타입 String으로해서 뷰이름을 반환하게끔하는 방법을 많이 쓴다!
+	
+6.★컨트롤러 메서드의 반환타입
+	반환타입이름이 String인 경우에는 뷰이름을 반환
+	반환타입이름이 void인 경우에는 맵핑된 url의 끝단어가 뷰이름
+	반환타입이름이 ModelAndView인 경우에는 Model과 뷰이름을 반환
+	
