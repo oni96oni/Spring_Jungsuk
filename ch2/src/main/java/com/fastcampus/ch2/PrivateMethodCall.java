@@ -4,19 +4,27 @@ import java.lang.reflect.Method;
 
 public class PrivateMethodCall {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception{
 //		Hello hello = new Hello();
-//		hello.main(); //mainÀº privateÀÌ¶ó¼­ ¿ÜºÎ È£Ãâ ºÒ°¡
+//		hello.main(); // privateì´ë¼ì„œ ì™¸ë¶€ í˜¸ì¶œ ë¶ˆê°€
 		
-//		Reflection API¸¦ »ç¿ë - Å¬·¡½º Á¤º¸¸¦ ¾ò°í ´Ù·ê ¼ö ÀÌ¾´¤¤ °­·ÂÇÑ ±â´É Á¦°ø
-//		java.lang.reflectÆĞÅ°Áö¸¦ Á¦°ø
-//		HelloÅ¬·¡½ºÀÇ Class°´Ã¼(Å¬·¡½ºÀÇ Á¤º¸¸¦ ´ã°í ÀÖ´Â °´Ã¼)¸¦ ¾ò¾î¿Â´Ù.
-		Class helloClass = Class.forName("com.fastcampus.ch2.Hello");
-		Hello hello = (Hello)helloClass.newInstance(); //Class°´Ã¼°¡ °¡Áø Á¤º¸·Î °´Ã¼ »ı¼º
+		/*
+		 * ì•„ê¹ŒëŠ” ì–´ë–»ê²Œ í˜¸ì¶œëœê²ƒ? 
+		 * Reflection APIë¥¼ ì‚¬ìš©í•˜ê¸° ë•Œë¬¸ -> í´ë˜ìŠ¤ ì •ë³´ë¥¼ ì–»ê³  ë‹¤ë£° ìˆ˜ ìˆëŠ” ê°•ë ¥í•œ ê¸°ëŠ¥ ì œê³µ
+		 * java.lang.reflectíŒ¨í‚¤ì§€ë¥¼ ì œê³µ
+		 */
+		
+		/*
+		 * Helloí´ë˜ìŠ¤ì˜ Classê°ì²´(í´ë˜ìŠ¤ì˜ ì •ë³´ë¥¼ ë‹´ê³  ìˆëŠ” ê°ì²´)ë¥¼ ì–»ì–´ì˜¨ë‹¤.
+		 * ì°¸ê³ ë¡œ í´ë˜ìŠ¤íŒŒì¼ì´ ë©”ëª¨ë¦¬ì— ì˜¬ë¼ê°ˆ ë•Œ, í´ë˜ìŠ¤ íŒŒì¼ë§ˆë‹¤ Classê°ì²´ê°€ í•˜ë‚˜ì”© ìƒì„±ëœë‹¤.
+		 */
+		Class helloClass = Class.forName("com.fastcamplus.ch22.Hello");
+		
+		Hello hello = (Hello)helloClass.newInstance(); //Classê°ì²´ê°€ ê°€ì§„ ì •ë³´ë¡œ ê°ì²´ ìƒì„±, ë°˜í™˜íƒ€ì…ì´ objectë¼ì„œ í˜•ë³€í™˜ í•„ìš”
 		Method main = helloClass.getDeclaredMethod("main");
-		main.setAccessible(true);
+		main.setAccessible(true); // privateì¸ main()ì„ í˜¸ì¶œ ê°€ëŠ¥í•˜ê²Œ í•œë‹¤.
 		
-		main.invoke(hello); // hello.main()°ú µ¿ÀÏ
+		main.invoke(hello); //hello.main()ë¥¼ í˜¸ì¶œí•œê²ƒê³¼ ë™ì¼
 	}
 
 }

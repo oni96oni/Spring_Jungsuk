@@ -1,0 +1,25 @@
+자바인터프리터가 main메서드를 호출할때 문자열배열을 만들어서 매개변수값들을 배열에 하나씩 집어넣음 띄어쓰기 구분자로사용해서
+순서대로 args[n]을 차지해서 받아온값을 메서드에 넣어준다.
+
+HTTP 요청과 응답
+	1.HttpServletRequest
+		url을 이용해서 요청을 한다음에 HttpServletRequest, 즉 서블릿(톰캣)이 요청을 받아서 객체로 만들어서 메인메서드의 매개변수로 넘겨준다.
+		요청한정보를 리퀘스트에 담고 이것을 메인메서드 매개변수(HttpServletRequest request)로 넘겨줌 
+		
+	2.HttpServletRequest의 메서드
+		getScheme() : 브라우저에 입력한 URL, http해당
+		getServerName() : ip주소
+		자세한건 RequestInfo.java 참조
+		
+		AWS에 배포해서 RequestInfo 실행해보면 아이피가 똑바로나올것이다!
+		
+		? 뒤에부분을 쿼리스트링이라고 한다. 값을 전달할때 사용! 구분자는 &를 사용한다.
+		
+		Main클래스파일을 PrivateMethodCall로 바꾸었다.
+		
+		결과를 브라우저에서 나오게하려면 HttpServletResponse response 매개변수를 추가해주어야한다!
+		
+		브라우저는 우리가 보내는 요청이 바이너리인지 텍스트인지 모르기때문에 타입을 지정해주어야한다.
+		response.setContentType("text/html"); 이렇게
+		
+		

@@ -1,33 +1,31 @@
 package com.fastcampus.ch2;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 @Controller
 public class TwoDice {
-	@RequestMapping("/rollDice")
-	public void main(HttpServletResponse response) throws IOException {
-		
-		int idx1 = (int)(Math.random()*6)+1;
-		int idx2 = (int)(Math.random()*6)+1;
-		
-		response.setContentType("text/html");
-		response.setCharacterEncoding("utf-8");
-		PrintWriter out = response.getWriter();
-		out.println("<html>");
-		out.println("<head>");
-		out.println("</head>");
-		out.println("<body>");
-		out.println("<img src='resources/img/dice"+idx1+".jpg'>");
-		out.println("<img src='resources/img/dice"+idx2+".jpg'>");
-		out.println("</body>");
-		out.println("</html>");
-	}
+    @RequestMapping("/rollDice")
+    //    public static void main(String[] args) { , 매개변수에 response만 있으므로 입력은 없고 출력만있는 모습 
+    public void main(HttpServletResponse response) throws IOException {
+        int idx1 = (int)(Math.random()*6)+1;
+        int idx2 = (int)(Math.random()*6)+1;
 
+        response.setContentType("text/html");
+        response.setCharacterEncoding("utf-8");
+        PrintWriter out = response.getWriter();
+        out.println("<html>");
+        out.println("<head>");
+        out.println("</head>");
+        out.println("<body>");
+        out.println("<img src='resources/img/dice"+idx1+".jpg'>");
+        out.println("<img src='resources/img/dice"+idx2+".jpg'>");
+        out.println("</body>");
+        out.println("</html>");
+        out.close();
+        //프린트문으로 html형식을 출력만해주면 된다! 브라우저에 내가원하는 모습을 출력하기위해서는
+    }
 }
-//얘 처럼 실행할때마다 결과가 달라지면 동적리소스 img파일의 jpg들은 정적리소스라고한다.
