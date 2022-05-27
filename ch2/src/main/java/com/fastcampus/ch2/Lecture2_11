@@ -1,11 +1,24 @@
 스프링 mvc패턴이 어떤 원리를 갖는거야?
 어떤 원리를 가졌길래 매개변수만 넣어줘도 알아서 하는거야?
 
--parameters : 매개변수 이름 저장 옵션 (jdk1.8부터 적용)
+	javac -parameters : 매개변수 이름 저장 옵션 (jdk1.8부터 적용)
+	
+		윈도우 - 프리퍼런스 - 컴파일러 - 맨아래 체크시 매개변수이름저장하는 옵션
 
-pom.xml에서 자바버젼 변경후 maven에서 프로젝트 업데이트 후 재실행 
+	pom.xml에서 자바버젼 변경후 maven에서 프로젝트 업데이트 후 재실행 
+		프로퍼티즈 - 자바버전에서 버전변경 가능하다. 스프링버전 또한 변경가능
 
-매개변수 이름 얻어오기
-1.reflection API (-parameters 옵션)
-2.classfile (jdk1.8버전 이전에는 이렇게 매개변수 이름 알아냈음)
+매개변수 이름 얻어오는 두가지 방법.
+	1.reflection API (-parameters 옵션)
+	2.classfile (jdk1.8버전 이전에는 이렇게 매개변수 이름 알아냈음) 클래스파일을 직접 읽는방법.
+	보통 두가지 방법 다이용! 1먼저 그다음 2
+	
+	11강에서는 classfile을 이용한 방법!
 
+MethodCall
+	Hashmap만들고 ModelController의 main에 map넣고 
+	put한것을 반환받음 ( txtView2 / 뷰이름 ) 
+	작업결과가 담긴 맵을 render 라는 메서드에 보냄
+	render에서는 받아온값 출력
+	
+	그 뷰에 맞게 값들을 채워서 보여준다.

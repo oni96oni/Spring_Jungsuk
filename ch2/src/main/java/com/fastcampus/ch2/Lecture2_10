@@ -25,3 +25,29 @@
 		반환타입이 void인 경우에는 맵핑된 url의 끝단어가 뷰이름
 		반환타입이 ModelAndView인 경우에는 Model과 뷰이름을 반환
 		
+YoilTellerMVC 이런식으로 수정도 가능/ 하지만 Main에 Model 매개변수 없으면 MethodCall2 수업을 진행할때 에러발생 여기다가 흔적남겨놓고 참고할게~
+
+@Controller
+public class YoilTellerMVC {
+		@RequestMapping("/getYoilMVC")
+		public ModelAndView main(int year, int month, int day) throws IOException {
+			//이 String이 view의 이름이다.
+			
+			ModelAndView mv = new ModelAndView();
+			//1.유효성 검사
+			
+			// 2. 요일 계산
+			char yoil = getYoil(year, month, day);
+			
+			// 3. 계산한 결과를 model에 저장
+			mv.addObject("year", year);
+			mv.addObject("month", month);
+			mv.addObject("day", day);
+			mv.addObject("yoil", yoil);
+			
+			// 4. 결과를 보여줄 view를 지정
+			mv.setViewName("yoil");
+			
+			return mv;
+	}
+}
