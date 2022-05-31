@@ -17,3 +17,20 @@
 		loginForm에다가는 히든인풋태그를 만들어 놓고 GET으로 받은 정보를 채우면 이 값이 같이 LoginController에게 간다!
 		LoginController는 redirect하면은 게시판으로 바로가는것!!
 		
+	3.세션을 시작할까? session="true" or session="false" ?
+		홈화면이나 로그인화면까지는 세션이 필요 없다. BoardController에서부터 로그인을 시도하면서 세션이 필요! 세션은 가능한 유지기간이 짧아야 좋다.
+		세션이 있을때는 세션을 안만들어 그런데 세션이 없을때는 true면 생성 false일때는 생성을 하지 않는다.
+		true나 false는 세션을 시작할까? 라는 질문에 대한 답변!
+		세션은 true가 디폴트값임 필요없는 페이지에는 false로 넣어주자.
+		
+		1.세션이 필요없는 jsp화면은 session="false"로 해라
+		2.★session="flase"가 기존 세션에 영향을 미치지 않는다! 세션이 끊어지는것이 아니라 시작할지말지 결정하는것이지 일단 세션이 시작한 다음에는 session이 true이든 false이든 상관없다.
+		
+		session="false"일 때, sessionScope와 pageContext.session은 사용이 불가하다
+		sessionScope.id를 pageContext.request.getSession(false).getAttribute("id")로 변경해야함 STS에서 에러라고 표시해도 무시하면됨
+		[참고]getSession(true)는 session이 없는 경우 session을 새로 생성하기 때문에 session이 없어도 새로 생성하지 않도록 getSession(false)를 사용
+		
+		LoginController.java에 login메서드의 매개변수에다가 아래처럼 넣어줄 수도 있다.
+		@CookieValue("JSESSIONID") String cookieId
+		이 애너테이션은 쿠키중에 매개변수에 해당하는값을 가져다가 cookieId에다가 넣어준다. 원하는 쿠키가 있으면 CookieValue애너테이션을 이용해서 가져올 수 있다.
+		

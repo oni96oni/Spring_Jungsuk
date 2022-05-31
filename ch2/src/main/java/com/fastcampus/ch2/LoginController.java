@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,7 @@ public class LoginController {
 	}
 	
 	@PostMapping("/login")
-	public String login(String id, String pwd, boolean rememberID, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String login(String id, String pwd, String toURL, boolean rememberID, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// 1. id와 pwd를 확인
 		if(!loginCheck(id,pwd)) {
 			// 2-1. 일치하지 않으면, loginForm으로 이동
@@ -56,7 +57,9 @@ public class LoginController {
 			response.addCookie(cookie);
 		}
 		// 	3. 홈으로 이동
-		return "redirect:/";
+		toURL = toURL==null || toURL.equals("") ? "/" : toURL;
+		
+		return "redirect:"+toURL;
 	}
 
 	private boolean loginCheck(String id, String pwd) {
