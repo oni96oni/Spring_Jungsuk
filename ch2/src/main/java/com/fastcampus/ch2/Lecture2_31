@@ -2,4 +2,57 @@
 	6.Validator란?
 		객체를 검증하기 위한 인터페이스. 객체 검증기(Validator)구현에 사용!
 		
+		boolean supports(Class<?> clazz);
+			이 검증기로 검증가능한 객체인지 알려주는 메서드
+		void validate(Object target, Errors errors);
+			target = 검증할 객체, errors = 검증하다 발생한 에러를 저장하는곳
+		
+		Errors 인터페이스에는 
+		void reject(String errorCode); -> 객체 전체에 대한 에러를 저장할때
+		void rejectValue(String field, String errorCode); -> 어떤 필드(iv)에대한 에러를 저장할때
+		
+	7.Validator를 이용한 검증 - 수동
+		컨트롤러내의 메서드에다 검증하는 코드를 작성. 이 부분을 별도로 분리하였다! 그게 바로 Validator! 그 다음부터는 그냥 Validator객체를 생성하고 
+		메서드를 실행시키면 끝.
+		
+	8.Validator를 이용한 검증 - 자동
+		기존의 코드를 @InitBinder를 이용해서 Validator 등록을 해준다. 검증할 객체 앞에다가 @Valid른 애너테이션을 붙이면 자동으로 검증한다!
+		
+	9.글로벌 Validator
+		하나의 컨트롤러에서만 작동하는 검증기말고 전체의 컨트롤러에서 작동하는 검증기를 만들기 위해서는
+		하나의 Validator로 여러 객체를 검증할 때, 글로벌 Validator로 등록하면된다.
+		
+		글로벌 Validator로 등록하는 방법
+		servlet-context.xml파일에 
+			<annotation-driven validator="globalValidator"/>
+			<beans:bean id="globalValidator" class="com.fastcampus.ch2.GlobalValidator"/>
+		
+		글로벌 Validator와 로컬 Validator를 동시에 적용하는 방법
+		컨트롤러 안에다가 @InitBinder가 붙은 메서드를 만들고 그 안에 addValidators에 로컬 Validator를 추가해준다. ( 글로벌 validator 안에다가 로컬을 추가하는 것이어서 set이 아니라 add를 써야한다)
+			
+		BindingResult는 Errors인터페이스의 자손이다. 
 	
+		required라고 에러코드를 저장해도, 여러개의 에러코드를 만들어서 거기에 해당하는 메시지를 찾는다.
+		arguments는 에러메시지에 사용할 값들 default message는 미리 지정해놓은 매개변수값을 보여주는것
+		
+		valid는 api다운받아와서 사용!
+		
+		setValidator를 쓰면 globalValidator를 안쓰게 된다.
+		
+	10.MessageSource
+		다양한 리소스에서 메시지를 읽기 위한 인터페이스
+		단순히 getMessage이다.
+		
+		(1) 프로퍼티 파일을 메시지 소스로하는 ResourceBundleMessageSource를 등록
+		servlet-context.xml에 추가
+		
+		(2) error_message.properties 파일을 만들어야한다.
+		
+	11.검증 메시지의 출력
+		스프링이 제공하는 커스텀 태그 라이브러리를 사용해야한다.
+		<%@ talib ~ >
+		<form>대신 <form:form> 사용
+		<form:errors>로 에러를 출력. path에 에러 발생 필드를 지정.(*은 모든 필드의 에러)
+				
+		
+		
