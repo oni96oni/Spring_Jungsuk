@@ -1,3 +1,65 @@
 DispatcherServlet 파헤치기
 	1.DispatcherServlet이란 ?
+		기본적으로 서블릿은 입력 받아서 처리하고 출력하는 형태. 이런것이 여러개있는데 공통된 부분을 공통처리하는게 DispatcherServlet의 역할이다!!
+		DispatcherServlet이 앞에서 전처리를 하는것이다. 즉, 각 서블릿의 앞에서 해야할것들을 묶어서 처리.
 		
+	2.Spring MVC의 요청 처리 과정
+		뷰의 이름을 받는다. 그 이름으로 뷰를찾아서 클라이언트에게 응답한다.
+		
+		요청이 왔을때 어떤 메서드로 처리하면 좋을지 HandlerMapping에게 물어본다(관심사의 분리) 이 요청을 어떤 메서드가 처리할 수 있는지!
+		HandlerMapping은 map으로 관리, 요청 URL이 Key값 메서드가 Value값
+		물어봐서 적절한 메서드를 찾아낸 뒤 컨트롤러에게 메서드호출을한다.
+		
+		DispatcherServlet과 Controller 사이에도 HandlerAdapter라는 것이 들어간다.(느슨한 연결 -> 변경에 유리) 여기를 거쳐서 호출을 한다!
+		HandlerAdapter는 종류가 여러개 있을 수 있다. 핸들러 매핑이 알려준 메서드를 어떤 핸들러 어뎁터가 호출할 수 있는지 보고 그 핸들러 어뎁터에게 넘겨주고 그러면 핸들러 어뎁터가 어떤 컨트롤러가 처리할 수 있는지 보고 그 컨트롤러에게 요청을 처리.
+		디스패쳐서블릿이 컨트롤 뿐만 아니라 서블릿도 호출이 가능하다.
+		
+		viewResolver <- InternalResourceViewResolver
+		servlet-context.xml에 있다.
+		뷰 이름을 주면 그 이름을 정해놓은 접두사, 접미사를 붙여서 실제 뷰 이름을 알려준다.
+		
+		디스패쳐 서블릿이 viewResolver를 거쳐서 받은 뷰에게 데이터가 담겨있는 Model을 넘겨주고 (JstlView(느슨한 연결)을 거친다!)뷰의 jsp파일이 데이터를 가지고 클라이언트에게 응답.
+		
+	3.DispatcherServlet의 소스 분석
+		DispatcherServlet.class는 spring-webmvc-5.0.7 RELEASE.jar에 포함
+		언제든지 바꿀 수 있는 구조로 되어있다!
+		주요 메서드
+			void initStrategise(ApplicationContext context) 							- 기본 전략을 초기화
+			void doService(HttpServletReuqest request, HttpServletResponse response) 	- doDispatch()호출
+			void doDispatch(HttpServletRequest request, HttpServletResponse reponse)	- 실제 요청을 처리, processDispatchResult을 호출
+			void processDispatchResult(HttpServletRequest request, HttpServletResponse response, HandlerExecutionChain)
+			- doDispatch로부터 처리한 결과를 받아서, 예외가 발생했는지 확인하고, 발생하지 않았으면 render()를 호출
+			void render(ModelAndView mv, HttpServletRequest request, HttpServletResoponse response) - 응답의 결과를 최종적으로 생성해서 클라이언트에게 전송
+			
+		DispatcherServlet.properties파일에서
+			LocaleResolver - 지역에 대한 정보를 처리할때 사용하는 클래스를 AcceptHeaderLocaleResolver를 쓰겠다. 
+			ThemeResolver - 테마기능
+			★★HandlerMapping - 요청이 오면 어떤 메서드가 처리할 수 있냐! 여기선 Bean~ 에서 먼저 찾아보고 없으면 Request~ 에서 찾아본다. 
+			★★HandlerAdapter - 실제로 요청을 처리할 종류가 서블릿도있고 컨트롤러도있고 다양하다
+			HandlerExceptionResolver - 예외 처리하는거
+			RequestToViewNameTranslator - 요청url을 가지고 어떤 뷰를 사용할지 알아내는 역할
+			ViewResolver - 컨트롤러가 뷰이름 반환했을때 실제로 어떤 이름인지를 알려주는것
+			FlashMapManager - 데이터를 맵형태로 일시적으로 저장해서 관리.(세션을 이용)
+			
+		디버그
+			HandlerMapping은 map형태로 key : URL / value : method 데이터 저장하고있다.
+			디스페쳐 서블릿이 HandlerMapping한테 URL을 주면서 물어본다. 이 URL을 누가 처리할 수 있는지 대답으로 HandlerMethod를 준다 여기에는 메서드 정보가 들어있어!
+			이 정보를 디스페쳐 서블릿이 HandlerAdapter에게 물어본다. HandlerAdapter는 여러개가 있다. 모두에게 물어봄 HandlerMethod에게 받은 메서드를 누가 처리할 수 있냐? 라고
+			그래서 그걸 처리할 수 있는 HandlerAdapter를 찾아서 얘에게 위임한다! 그러면 어댑터가 실제 컨트롤러에 있는 메서드를 호출하고 결과를 받아서 다시 디스페쳐 서블릿에게 준다!
+			
+			스프링 - intercepter : 거의 같은 개념!
+			서블릿 - filter : 전처리 & 후처리를 담당
+			
+			PostHandle은 인터셉터와 관련있는 부분이다.
+			
+			Propertise객체는 map하고 동일! key,value가 String 일 뿐
+			
+			인스턴스화 해서 디스페쳐 서블릿이 작업할때 사용한다.
+			
+			processDispatchResult - 호출된 메서드가 반환환 결과(mv)로 응답 내용을 만들어서 응답을 전송하는 메서드. 실제로는 처리를 render()라는 메서드가 한다.
+								  - 예외가 발생했으면 실행결과(mv)를 예외에 대한 정보와 예외를 보여줄 뷰로 변경
+			render()는 view.render()를 호출하고 view는 mv를 이용해서 응답을 만들고 전송
+			
+			
+			
+			
