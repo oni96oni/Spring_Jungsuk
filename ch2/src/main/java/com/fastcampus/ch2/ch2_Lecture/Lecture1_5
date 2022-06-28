@@ -1,0 +1,11 @@
+Cloud는 internet을 의미.
+
+Amazon EC2 - Web Hosting - 가상 컴퓨터(vm), instance에 윈도우,톰캣등을 설치해서 접속할것.
+
+on-premise : 서버를 직접 운영하는 방식 - 관리자가 필요
+Serverless : 서버작업을 서버내부가 아닌 클라우드 서비스로 처리 - idc에서 관리
+Region : 데이터 센터가 물리적으로 존재하는 곳
+CDN(Content Delivery Network) : 정적 리소스(이미지, 라이브러리)를 빠르게 제공할 수 있게 전세계의 캐시서버에 복제해주는 서비스.
+
+db관리는 ec2에 설치 or rds
+

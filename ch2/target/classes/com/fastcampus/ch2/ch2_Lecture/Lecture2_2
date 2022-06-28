@@ -1,0 +1,5 @@
+AWS에 배포하기
+	Export할때는 WAR file로 압축해서 진행.
+	Web Archive File - java application을 하나로 묶을때 사용
+	
+	
