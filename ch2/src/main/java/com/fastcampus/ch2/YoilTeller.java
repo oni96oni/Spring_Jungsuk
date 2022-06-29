@@ -37,7 +37,7 @@ public class YoilTeller {
 //      System.out.println(yoil + "요일입니다.");
 		response.setContentType("text/html");    // 응답의 형식을 html로 지정 (타입을 정해주어야해!)
 		response.setCharacterEncoding("utf-8");  // 응답의 인코딩을 utf-8로 지정
-		PrintWriter out = response.getWriter();  // 브라우저로의 출력 스트림(out)을 얻는다.
+		PrintWriter out = response.getWriter();  // responser 객체에서 브라우저로의 출력 스트림(out)을 얻는다.(브라우저 페이지소스에서 확인가능
 		out.println("<html>");
 		out.println("<head>");
 		out.println("</head>");

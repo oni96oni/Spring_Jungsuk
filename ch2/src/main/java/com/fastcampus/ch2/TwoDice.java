@@ -21,11 +21,12 @@ public class TwoDice {
         out.println("<head>");
         out.println("</head>");
         out.println("<body>");
-        out.println("<img src='resources/img/dice"+idx1+".jpg'>");
-        out.println("<img src='resources/img/dice"+idx2+".jpg'>");
+        out.println("<img src='img/dice"+idx1+".jpg'>");
+        out.println("<img src='img/dice"+idx2+".jpg'>");
         out.println("</body>");
         out.println("</html>");
         out.close();
         //프린트문으로 html형식을 출력만해주면 된다! 브라우저에 내가원하는 모습을 출력하기위해서는
+        //나는 경로에 resources를 빼주어야 경로를 자세히 찾을 수 있다.
     }
 }
