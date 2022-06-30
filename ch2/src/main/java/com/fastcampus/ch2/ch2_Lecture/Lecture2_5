@@ -1,41 +1,64 @@
+getParameter(); name에 해당하는 value값을 받아온다.
+getParameterValues(); 쿼리스트링의 name값들이 같을때 String[]로 value값들을 받는다.
 getParameterName(); getParameter에 매개변수로들어가는 name들을 불러오는것
 getParameterMap(); 위와동일한데 value값까지 같이!
-name들의 이름이 같은경우 getParameterValues를 사용! String[]타입
 
 클라이언트와 서버
 	1.클라이언트와 서버
-		클라이언트app - url
-		클라이언트 컴퓨터 - 노트북
-		서버컴퓨터 - 서버관리컴퓨터
-		톰캣 - 서버애플리케이션
+		클라이언트(client) : 서비스를 요청하는 애플리케이션(or 컴퓨터)
+		서버(server) : 서비스(service)를 제공하는 애플리케이션 (or 컴퓨터)
+		
+			예시)
+			클라이언트app - 브라우저
+			클라이언트 컴퓨터 - 노트북
+			서버컴퓨터 - 서버관리컴퓨터
+			톰캣 - 서버애플리케이션
 		
 		요청하는쪽이 클라이언트, 응답하는쪽이 서버 (역할에 따라서 구분을한다.)
 		
-	2.서버의 종류(어떠한 서비스를 하느냐에 따라 달라진다.)
-		2-1 Email server - 이메일 제공
-		2-2 File server - 파일 제공
-		2-3 Web server - 거의 모든것 제공
+	2.서버의 종류(어떠한 서비스를 제공 하느냐에 따라 달라진다.)
+		Email server - 이메일 제공
+		File server - 파일 제공
+		Web server - 거의 모든것 제공(브라우저로 할 수 있는)
 
 	3.서버의 포트
 		★1대의 pc에 여러개의 서버가 존재한다면 ip주소만으로는 어떤서버가 요청했는지 알수 없어서 그안에 포트번호가 필요하다!
-		포트 번호로 어떤 서버에대한 요청인지 알 수 있다. 한 포트에는 한 서버만 연결 가능(Listening이라 한다)
+		포트 번호로 어떤 서버에대한 요청인지 알 수 있다. 
 		0~1023까지는 예약된 포트 그외만 사용가능
 		웹서버는 기본이 80이어서 생략가능.
-
+		
+		서버에 연결하기 위해서는 포트와 서버가 연결(binding)되어 있어야 한다. 
+		한 포트에는 한 서버만 연결 가능(Listening이라 한다)
+		
 	4.웹 애플리케이션 서버(WAS)란?
-		웹 애플리케이션을 서비스하는 서버! 프로그램을 서버에 설치해놓고 클라이언트가 이 프로그램을 사용할 수 있게 하는것! 그래서 클라이언트가 원격호출해서 프로그램 사용
-		Application은 Program이다.
-		업데이트의 용이성 때문에 WAS사용한다 1곳만 업데이트하면 되기 때문에
+		웹 애플리케이션을 서비스하는 서버란?
+		Web server: Web을 서비스
+		★Application은 Program이다. 
+		
+		프로그램을 서버에 설치해놓고 클라이언트가 이 프로그램을 사용할 수 있게 하는것!(클라이언트에다가 설치하는것이 아닌) 그래서 클라이언트가 원격호출해서 프로그램 사용
+		업데이트의 용이성 때문에 WAS사용한다 1곳만 업데이트하면 되기 때문에! 클라이언트에 설치를 하면 모든 클라이언트가 업데이트를 해주어야 한다.
 	
 	5.Tomcat의 내부 구조
-		서버로 들어가서 요청하면 8080포트를 통해서 접속하고나면 Thread pool에서 Thread들이 기다리고있다. 미리 Thread를 만들어놓으면 그때그때 만들필요가 없으므로!
-		톰켓 서버안에는 서비스가 있다. 서비스가 요청을 처리하는데, 그 서비스 안에는 Connector가 있다. 어떤 요청(HTTP1.1, HTTP2, AJP)이냐에 따라 처리할 
-		Connector가 다르다.
+		브라우저로 요청하면 8080포트로 요청이 가고, 서버(톰캣)에 접속하게 되는데, Thread pool에서 Thread들이 요청을 기다리고있다. 
+		미리 Thread pool를 만들어놓으면 그때그때 만들필요가 없으므로!
+		톰켓 서버안에는 서비스가 있다. 서비스가 요청을 처리하는데, 그 서비스 안에는 Connector가 있다. 
+		어떤 요청(프로토콜 ex:HTTP1.1, HTTP2, AJP)이냐에 따라 처리할 Connector가 다르다.
 		그 다음엔 Connector가 실제로 처리를 하는 Engine(Catalina)에게 요청을한다. Engine안에는 Host가 있다(여러 개의 호스트가 존재할 수 있음, 보통은 한개)
-		Host안에 Context가 있다(여러 개의 컨텍스트 존재 가능). Context는 하나의 Web Application이다. 우리한테는 CH2같은 개념! STS Project가 Context라고 
-		보면 된다. 서로 영향을 주지않는 독립적인 공간 context. Context안에 Servlet 존재! Servlet은 작은 서버 프로그램이라는 뜻. 서블릿이 실행되면 클라이언트에게
-		전송하면서 끝!
+		Host이름은 getRequestURL()에서 getRequestURI()를 뺀 부분이다.
+		Host안에 Context가 있다(여러 개의 컨텍스트 존재 가능). Context는 하나의 Web Application이다. 
+		우리한테는 CH2같은 개념! STS Project가 Context라고 보면 된다. (context root 할때 그 context맞다. 해당하는 context있음)
+		서로 영향을 주지않는 독립적인 공간 context. Context안에 Servlet 존재! Servlet은 작은 서버 프로그램이라는 뜻.
+		서블릿과 컨트롤러는 같은개념이라고 보면 된다!
+		요청이 오면 그 url에 해당하는 context로 가서 많은 서블릿(context뒤의 url)중에서 해당하는 url과 맵핑시켜서 실행한다.
+		그래서 HttpServletRequest의 메서드에 보면 ★getRequestURI()메서드는 getContextPath()와 getServletPath()로 구성되어 있는것!!
+		서블릿이 실행되면 작업을 수행하고 그 결과를 클라이언트에게 전송하면서 끝!
 	
+	실습
 		Thread pool은 스레드들을 요청이 오기 전에 미리 만들어 놓는것.
 		그중에 요청을 처리하고 있지않은애가 받아서 요청온 요구사항(프로토콜)에 따라서 커넥터에 꼽고 엔진에 넣는다.
-		Dispatcher Servlet이 컨트롤러의 메인메서드를 호출한다!
+		호출 스택에 보면 Thread가 run()로 시작해서 ThreadPool -> Http11Processor -> Engine -> Host -> Context로 진행된다.
+		여기서는 ch2가 Context이다. 그안에서 filter(Servlet 전처리, 서블릿이 처리하기 전에 앞에서 처리하는것)들을 거치고
+		Dispatcher Servlet이 받는다. 그 뒤에는 컨트롤러가 받는다. (컨트롤러는 우리가 아는 클래스 위에 @Controller를 의미 즉, 클래스가 받아서 실행)
+		★Dispatcher Servlet이 컨트롤러의 메인메서드를 호출한다!
+		
+		Http11Processor가 객체를 만들어서 준다.(요청을 받아서 요청 정보를 Request, Response객체에 넣어서) 여기서 처음만들어지는것!
