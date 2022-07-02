@@ -16,14 +16,15 @@ public class YoilTellerMVC {
 		return "yoilError";
 	}
 	
-    @RequestMapping("/getYoilMVC") // http://localhost/ch2/getYoilMVC
+    @RequestMapping("/getYoilMVC") // http://localhost/ch2/getYoilMVC, Mapping은 당연히 중복된게 있어서는 안된다!
     public String main(@RequestParam(required=true) int year, @RequestParam(required=true) int month, @RequestParam(required=true) int day, Model model) {
- 
+    	//request객체에서 매개변수 받지않고 직접값을 받게끔 코드작성
+    	
         // 1. 유효성 검사
     	if(!isValid(year, month, day)) 
     		return "yoilError";  // 유효하지 않으면, /WEB-INF/views/yoilError.jsp로 이동
     	
-        // 2. 처리
+        // 2. 요일 계산(처리)
     	char yoil = getYoil(year, month, day);
 
         // 3. Model에 작업 결과 저장
