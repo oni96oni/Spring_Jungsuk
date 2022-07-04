@@ -28,7 +28,7 @@ public class MethodCall3 {
 		Method main = clazz.getDeclaredMethod("main", int.class, int.class, int.class, Model.class);
 				
 		Parameter[] paramArr = main.getParameters(); //메인메서드의 매개변수 목록을 가져온다.
-		Object[] argArr = new Object[main.getParameterCount()]; // 매개변수 갯수와 같은 길이의 Object배열을 생성, 요청할때 넘어온값을 가지고 객체배열을 생성한다. 동적으로 구성! 하드코딩이 아니야
+		Object[] argArr = new Object[main.getParameterCount()]; // 매개변수 갯수와 같은 길이의 Object배열을 생성, 동적으로 생성한다는 것은 요청할때 넘어온값을 가지고 객체배열을 생성한다. 동적으로 구성! 하드코딩이 아니야
 //		String viewName = (String)main.invoke(obj, new Object[] { 2021, 10, 1, model }); 이런게 하드코딩
 		for(int i=0;i<paramArr.length;i++) {
 			String paramName = paramArr[i].getName();

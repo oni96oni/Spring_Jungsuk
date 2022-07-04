@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.ui.Model;
 import org.springframework.validation.support.BindingAwareModelMap;
 
-// @Controller + @RequestMapping을 합친것이 @WebServlet 서블릿에서는 메서드단위로 맵핑이 안되고 클래스단위로만 맵핑이 된다! 그래서 서블릿은 스프링에비해서 크래스를 많이 만들어야하는단점 보유
+// @Controller + @RequestMapping을 합친것이 @WebServlet 서블릿에서는 메서드단위로 맵핑이 안되고 클래스단위로만 맵핑이 된다! 그래서 서블릿은 스프링에비해서 클래스를 많이 만들어야하는단점 보유
 @WebServlet("/myDispatcherServlet")  // http://localhost/ch2/myDispatcherServlet?year=2021&month=10&day=1
 public class MyDispatcherServlet extends HttpServlet {
 	@Override

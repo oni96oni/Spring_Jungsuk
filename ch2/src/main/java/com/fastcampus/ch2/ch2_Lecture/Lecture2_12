@@ -1,10 +1,22 @@
-MethodCall 예제들만 잘 이해해도
-스프링이 어떻게 메서드의 매개변수에 맞게 값들을 넣어주고 변환하는지 이해할 수 있다! 이게 여기서의 핵심.
+ReflectionAPI를 이용해서 메서드를 호출하는것이 값을 직접넣어주는것(하드코딩)보다 유연하게 적용가능하다.
 
-MyDispatcherServlet에러 해결방법 2가지
+MethodCall 예제들만 잘 이해해도
+	스프링이 어떻게 메서드의 매개변수에 맞게 값들을 넣어주고 변환하는지 이해할 수 있다! 이게 여기서의 핵심.
+	
+MyDispatcherServlet에러(애너테이션 WebServlet을 쓰기위해선!) 해결방법 2가지
 	1.폼파일 변경
 	2.톰캣의 라이브러리를 임포트
 	
 	여기서는 2번 빌드패스-라이브러리에서 
 	
-	// @Controller + @RequestMapping을 합친것이 @WebServlet 서블릿에서는 메서드단위로 맵핑이 안되고 클래스단위로만 맵핑이 된다! 그래서 서블릿은 스프링에비해서 크래스를 많이 만들어야하는단점 보유
+	@Controller + @RequestMapping을 합친것이 @WebServlet 서블릿에서는 메서드단위로 맵핑이 안되고 클래스단위로만 맵핑이 된다! 
+	그래서 서블릿은 스프링에비해서 클래스를 많이 만들어야하는단점 보유
+	
+	
+	서블릿의 특징
+		HttpServlet 상속 받아야해
+		
+		메서드는 꼭 service라는 이름으로 매개변수는 HttpServletRequest request, HttpServletResponse response를 넣어주어야 한다!
+		
+	쿼리스트링에 같은 값이 들어올 수 있기 때문에 
+	map에 String String[]로 들어와있어서 배열을 String으로 변환해주어야 한다.
