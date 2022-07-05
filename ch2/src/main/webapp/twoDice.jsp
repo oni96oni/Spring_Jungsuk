@@ -16,7 +16,8 @@
 	<title>twoDice.jsp</title>
 </head>
 <body>
-	<img src='resources/img/dice<%=idx1%>.jpg'>
-	<img src='resources/img/dice<%=idx2%>.jpg'>
+<%-- 여기서 소스주소 resources를 삭제했는데 내가 어떤 부분을 건들여서 그런지 잘 모르겠다. --%>
+	<img src='img/dice<%=idx1%>.jpg'>
+	<img src='img/dice<%=idx2%>.jpg'>
 </body>
 </html>

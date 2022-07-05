@@ -27,7 +27,7 @@ public class HelloServlet extends HttpServlet{
 
 	@Override
 	public void destroy() {
-		// 3. 뒷정리 - 서블릿이 메모리에서 제거될때 서블릿 컨테이너에 의해서 자동 호출
+		// 3. 뒷정리 - 서블릿이 메모리에서 제거될때 서블릿 컨테이너에 의해서 자동 호출 
 		System.out.println("[HelloServlet] destroy() is called");
 	}
 
