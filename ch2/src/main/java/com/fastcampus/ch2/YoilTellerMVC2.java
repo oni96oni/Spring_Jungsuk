@@ -17,7 +17,9 @@ public class YoilTellerMVC2 {
 	}
 	
     @RequestMapping("/getYoilMVC2") // http://localhost/ch2/getYoilMVC2
-    public String main(@RequestParam(required=true) int year, @RequestParam(required=true) int month, @RequestParam(required=true) int day, Model model) {
+    public String main(@RequestParam(required=true) int year
+    		, @RequestParam(required=true) int month
+    		, @RequestParam(required=true) int day, Model model) {
  
         // 1. 유효성 검사
     	if(!isValid(year, month, day)) 
