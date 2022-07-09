@@ -22,7 +22,7 @@ public class RegisterController {
 	
 	@InitBinder
 	public void toDate(WebDataBinder binder) {
-		ConversionService conversionService = binder.getConversionService();
+//		ConversionService conversionService = binder.getConversionService();
 //		System.out.println("conversionService = " + conversionService);
 //		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 //		binder.registerCustomEditor(Date.class, new CustomDateEditor(df,false));
@@ -58,8 +58,9 @@ public class RegisterController {
 //			String msg = URLEncoder.encode("id를 잘못 입력하셨습니다.", "utf-8");
 //			
 //			m.addAttribute("msg", msg);
-//			return "forward:/register/add";
-////			return "redirect:/register/add?msg="+msg; //URL재작성(rewriting) 위에 방법이 모델을 통해서 전달하는 방법.
+//			return "forward:/register/add"; // 모델을 통한 전달방법
+		
+//			return "redirect:/register/add?msg="+msg; // URL재작성(rewriting) 60+61줄 합친것과 동일!
 //		}
 		
 		// 2. DB에 신규회원 정보를 저장

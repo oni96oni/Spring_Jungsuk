@@ -1,29 +1,51 @@
 @GetMapping과 @PostMapping
 	1.@GetMapping, @PostMapping
 		@RequestMapping가 너무 길어서 대신 @GetMapping, @PostMapping 사용가능
-		URL이 같으면 맵핑충돌이 나는데 메소드가 다르면 충돌이 발생하지 않는다! url이 같아도 메소드로 구분이되기때문이다!
+			@RequestMapping(value="register/add", method=Request.Method.GET)
+			@GetMapping("/register/add")
+			
+			@RequestMapping(value="register/add", method=Request.Method.POST)
+			@PostMapping("/register/add")
+		URL이 같으면 맵핑충돌이 나는데 메소드(GET, POST를 말하는것)가 다르면 충돌이 발생하지 않는다! url이 같아도 메소드로 구분이되기때문이다!
 		
 	2.클래스에 붙이는 @RequestMapping
 		맵핑될 URL의 공통 부분을 @RequestMapping으로 클래스에 적용
+			@RequestMapping("/register")
+			
+			@RequestMapping(value="register/add", method=Request.Method.GET)
+			@GetMapping("/add")
+			
+			@RequestMapping(value="register/add", method=Request.Method.POST)
+			@PostMapping("/add")
 		그렇게하면 메소드들 애너테이션 매개변수앞에 자동으로 붙는다. 뭐가? @RequestMapping의 매개변수가!
+		
+		서블릿하고 달리 스프링에서는 맵핑을 클래스 단위가 아니라 메서드 단위로하기 때문에 서블릿처럼 클래스를 많이 안만들어도 되지만 하나의 클래스안에 다 집어 넣을 수 
+		없으니 모듈별로 나누어서 하나의 클래스에 넣는다.
 	
 	3.@RequestMapping의 URL패턴
 		@RequestMapping도 URL패턴을 사용할 수 있다. 서블릿에서는 @WebServlet을 사용했지만 스프링에서는 @RequestMapping을 사용한다. 둘이 거의 같다.
-		?는 한글자, *는 여러글자, **는 하위경로 포함. 배열로 여러 패턴 지정
+		?는 한 글자, *는 여러 글자, **는 여러 하위경로 포함. 배열로 여러 패턴 지정
 		URL패턴 - @WebServlet : 서블릿
 			   - @RequestMapping : 스프링 
 		우선순위가 있다. 정확히 일치 - 경로 맵핑 - 확장자 맵핑, 마지막까지 처리가 안되면 404 not found 뜨는것
-
-	4.URL인코딩 - 퍼센트 인코딩
+		그런데 각 맵핑별로 처리가 다르게 되나? 같은 url인데 맵핑하는애가 다르면 어떤일이 일어나나??
+		
+	4.URL인코딩 - 퍼센트 인코딩이라고도 한다.
 		%를 써서 퍼센트인코딩.
+		url에 요청을 보내면, 아스키가 아닌 글자(non-ASCII)를 16진수(%로 이루어진)로 변환하는데 이것을 url인코딩이라 한다.
 	 	URL인코딩 : URL에 포함된 non-ASCII문자를 문자코드(16진수) 문자열로 변환
 	 	URL디코딩 : 문자코드(16진수) 문자열문자를 URL에 포함된 non-ASCII문자로 변환
 	 	왜 이렇게해? 서버요청이왔을때 서버 접속은 전세계에서 가능하니까 그 요청이 어떤OS인지 어떤 인코딩인지 모르기때문에
 	 	★url에 쓰이는 문자는 모두 아스키여야한다.
-	 	문자코드(숫자)를 문자열로(인코딩) 문자열을 문자코드로(디코딩)
-	 	URL인코딩은 BASE64와 전혀 다르다. Base64는 6비트씩 끊어서 변환하는것 즉, 바이너리데이터를 텍스트로 변환
+	 	아스키는 모든 인코딩에서 공통으로 다 들어가기 때문에 상대방이 인코딩때문에 못받는일을 없게 만들어 준다.
+	 	
+	 	URL인코딩은 문자코드(숫자)를 문자열로(인코딩) 문자열을 문자코드로(디코딩)
+	 	Base64는 6비트씩 끊어서 변환하는것 즉, 바이너리데이터를 텍스트로 변환
+	 	서로 전혀 다른것!
 	 	
 	 	서버에 한글입력하면은 url인코딩은 브라우저가 해준다. 이 전송받은 데이터를 서버에서는 디코딩을해서 해석한다! 필수!
 	 	
+	 	filterChain.doFilter(request. response); DispatcherServlet으로 요청을 주는것
+	 	
 	 	필터가 전처리 역할을 해주어서 DS(Dispatcher Servlet)가 요청을 받기전에 한글처리를 해주는것!
-	 	.m2/repository 삭제하고 메이븐-프로젝트업데이트로 다시 모듈다운로드
+	 	.m2/repository 삭제하고 메이븐-프로젝트업데이트로 다시 모듈다운로드할 수 있다.

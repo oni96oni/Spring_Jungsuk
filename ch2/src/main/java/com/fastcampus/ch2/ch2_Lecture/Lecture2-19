@@ -2,27 +2,34 @@ src - main - webapp - WEB-INF - spring - appServelt - servlet-context.xml 파일
 
 src - main - webapp - WEB-INF - spring - root-context.xml 파일은 'non web관련 설정파일'
 
-폼태그에 각각의 타입은 text, password, checkbox, button, email 등 다양
+폼태그안에 input 태그의 각각의 타입은 text, password, checkbox, button, email 등 다양
 
-원래는 폼태그에 action, method 등이 있어서 어디로 보낼지(전송할 url) GET, POST등 어떤 요청인지 있어야한다.
+원래는 폼태그에 action, method 등이 있어서 어디로 보낼지(action="전송할 url") GET, POST(method)등 어떤 요청인지 있어야한다.
 
+	method따로 안적어주면 GET이 default이다.
+	url도 따로 안적어주면 자기자신한테 전송한다.
 	GET은 쿼리스트링으로 데이터가 전달, 바디가 없어서
 	POST는 바디에 데이터를 넣어서 전달
 
 회원가입 누르면 폼이 여기서는 자기자신한테 전송되어서 그냥 refresh됬음 
 
-값이 여러개일때에는 String[] snsArr = request.getParameterValues("sns") 이런식인데 
+값이 여러개인것을 받아올때에는 String[] snsArr = request.getParameterValues("sns") 이런식인데 
 EL에서는 ${paramValues.sns}[0] [1] [2] 이런식
 
-url상에서는 한글인데 그걸 복붙해서 메모장에서 보면 6진법으로 나온다! 한글이어도 url전송할때는 url인코딩이 이루어진다. 브라우저에서는 보기좋게 보여주는것일뿐! 한글이 전송되는것이 아니야!
-	한글 그대로 뽑고싶을때는 앞에 한글자 빼고 복붙하면 한글 그대로 나온다.
+url상에서는 한글인데 그걸 복붙해서 메모장에서 보면 6진법으로 나온다! 아스키가 아닌것들은 url전송할때는 url인코딩이 이루어진다. 
+브라우저에서는 보기좋게 보여주는것일뿐! 한글이 전송되는것이 아니야! 한글 그대로 뽑고싶을때는 앞에 한글자 빼고 복붙하면 한글 그대로 나온다.
 	
 onsubmit="return formCheck(this)
 	formCheck는 registerForm.html파일의 자바스크립트함수이고 this가 의미하는것은 form태그 자신이다. onsubmit은 이벤트 등록!
+	원래는 function(this) {
+			return formCheck(this)
+		}
+	인데 생략하고 주 내용만 넣어도 ok
+	onsubmit - 전송할때 실행
 	
 함수(formCheck)의 결과가 true이면 폼전송, false이면 폼전송을 하지 않는다.
 
-js6에서 나온 Templet Literal이 있다 
+js6에서 나온 Templet Literal이 EL과 매우 비슷하게 생겼다.
 document.getElementById("msg").innerHTML = `<i class="fa fa-exclamation-circle"> ▶ ${'${msg}'} ◀ </i>`;
 	EL과 동일 대신 ★EL은 서버에서 템플릿리터럴은 브라우저에서 돌아간다
 	서버가 먼저 돌아가고 그다음에 브라우저가 돌아간다 그래서 프로그램이 EL먼저 인식
@@ -32,4 +39,4 @@ document.getElementById("msg").innerHTML = `<i class="fa fa-exclamation-circle">
 	2.session id 자동추가
 	
 	<form action="<c:url value="▲/register/save"/>" method="post" onsubmit="return formCheck(this)">
-	▲위치에다가 /ch2를 자동으로 추가!
+								▲위치에다가 /ch2를 자동으로 추가!

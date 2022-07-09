@@ -91,7 +91,7 @@
    <script>
        function formCheck(frm) {
             let msg ='';
-            if(frm.id.value.length<3) {
+            if(frm.id.value.length<3) {//form에있는 id의  value의 길이가 3보다 작다면
                 setMessage('id의 길이는 3이상이어야 합니다.', frm.id);
                 return false;
             }

@@ -17,9 +17,9 @@ public class YoilTellerMVC6 {
 		ex.printStackTrace();
 		
 		FieldError error = result.getFieldError();
-		System.out.println("code = " + error.getCode());
-		System.out.println("code = " + error.getField());
-		System.out.println("code = " + error.getDefaultMessage());
+		System.out.println("error.getCode = " + error.getCode());
+		System.out.println("error.getField = " + error.getField());
+		System.out.println("error.getDefaultMessage = " + error.getDefaultMessage());
 		return "yoilError";
 	}
 	
