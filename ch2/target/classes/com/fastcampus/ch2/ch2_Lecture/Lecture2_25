@@ -1,7 +1,13 @@
 세션(Session) - 실습
+	설계도
+		홈에서 Board클릭시 BoardController에서 로그인 여부 확인, 로그인 되어있으면 게시물 목록, 안되어 있으면 loginForm.jsp
+		LoginController에서 id,pwd일치하는지 확인 일치하면 홈화면으로, 일치하지 않으면 loginForm.jsp로 다시 보내준다.
+	
 	1.게시판 이용시, 미로그인이면 로그인 화면으로 이동.
 	
-	index.jsp 화면에서 Board(게시판)클릭 BoardController가 받아서 로그인 여부를 확인! yes면 바로 게시물 목록을 보여주고 아니면(로그인을 안한 상태이면) 로그인 화면으로 보낸다. (원래 로그인 컨트롤러로 가야하는데 여기서는 생략) 로그인 입력하면 로그인 컨트롤러가 받아서 id, pwd일치하면 index.jsp로 일치하지 않으면 loginForm.jsp로 보낸다	
+	index.jsp 화면에서 Board(게시판)클릭 BoardController가 받아서 로그인 여부를 확인! 
+	yes면 바로 게시물 목록을 보여주고 아니면(로그인을 안한 상태이면) 로그인 화면으로 보낸다. (원래 로그인 컨트롤러로 가야하는데 여기서는 생략) 
+	로그인 입력하면 로그인 컨트롤러가 받아서 id, pwd일치하면 index.jsp로 일치하지 않으면 loginForm.jsp로 보낸다	
 	
 	단계별로 하나씩 구현하고 개발하는게 오히려 더 빠르다 지금 우리 수준에서는
 	
@@ -11,3 +17,4 @@
 	LoginController에서 id와 pwd가 일치하면! 세션객체에 id를 저장해주어야한다.
 	그래야지 로그인 후 홈화면에서 Board들어갈때 boardList.jsp로 갈수있어
 	
+	로그인 했을때는 login이 logout으로 출력하는기능

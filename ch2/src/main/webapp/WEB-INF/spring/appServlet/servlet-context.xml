@@ -17,7 +17,7 @@
 	<resources mapping="/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory 
-	이 beans덕분에 return 뒤에 파일이름만 붙여도 자동으로 jsp파일로 연결된다. -->
+	이 beans덕분에 return 뒤에 파일이름만 붙여도 자동으로 jsp파일로 연결된다. 문자열을 받아서 실제 이름이 뭔지 알려주는 역할을 한다!-->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />

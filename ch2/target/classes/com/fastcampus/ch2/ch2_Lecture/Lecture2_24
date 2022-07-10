@@ -3,33 +3,45 @@
 		서로 관련된 요청들을 하나로 묶은 것 - 쿠키를 이용
 		원래 요청이란 하나하나 '독립'적! -> 요청간의 관계가 없다. 이 독립적인 요청들을 하나로 묶은게 세션이다. 쿠키를 이용해서 묶어! 세션은 쿠키와 관련이 많아
 		
-		browser마다 개별저장소(session객체)를 서버에서 제공
+		browser마다 개별저장소(session객체)를 서버에서 제공이 됩니다.
+		왜 브라우저마다 세션 객체가 생기냐?
 			쿠키를 이용하기 때문에 브라우저마다 제공(쿠키는 브라우저에 저장하기 때문), 세션객체는 서버에 저장!
+		그래서 브라우저마다 세션객체가 하나씩 제공이 된다. 브라우저와 1:1(세션)
 		
 		세션의 정의	
 			"a collection of related HTTP trasactions made by one browser to one server."
 			서로 관련된 요청과 응답의 모음, 하나의 브라우저하고 하나의 서버!
-			
+		
+		브라우저가 요청을 보내면 서버가 응답에 세션 ID를 준다.
+		
 		첫번째 요청 이후 부터는 쿠키를 이용해서 세션아이디를 주기 때문에 요청을 구분할 수 있다! 그래서 같은 세션아이디라는 구분이 생긴다. 그걸로 구분
+		
+		같은 세션ID를 가진 요청들은 같은 세션에 포함되는것! 같은 세션에 포함되어 있는 동안 세션저장소를 사용할 수 있는것
+		프로그램들에서 세션저장소를 사용
 		
 		하나의 세션을 끝내는 방법
 			1. 수동 종료: inValidate() -> 예를 들어 로그아웃
 			2. 자동 종료: Time out 
-			
+		
+		요청들을 하나로 묶어주는것이 세션이다.
+					
 		종료 된 뒤에는 새로운 세션 id를 발급해서 그 다음 세션 시작! 로그인부터 로그아웃 까지가 하나의 세션이라보면 쉽다.
 		
 	2.세션의 생성 과정
 		★브라우저가 요청을 하면 서버가 '무조건' 세션 객체(저장소)를 만든다. 세션 객체마다 갖고있는게 세션 id이다.
-		브라우저의 요청을 응답할때 쿠키에 심어서 보낸다. 그 쿠키에는 세션 아이디가 저장되어 있어서 그 다음부터는 서버가 요청을 구분할 수 있게되는것
+		세션 ID를 쓸 수 있게, 브라우저의 요청을 응답할때 쿠키에 심어서 보낸다. 그 쿠키에는 세션 아이디가 저장되어 있어서 그 다음부터는 서버가 요청을 구분할 수 있게되는것
+		헤더에 Set-Cookie가 세션을 만들라는 뜻이다.
 		
 	3.세션 객체 얻기
-		같은 pc여도 다른 브라우저로 접속하면 다른 세션들을 얻는다.
+		쿠키는 브라우저마다 저장이 되기 때문에 같은 pc여도 다른 브라우저로 접속하면 다른 세션들을 얻는다.
 		
-		컨트롤러에서는 세션 저장소를 사용하고 싶으면 request.getSeesion();을 사용하면 된다. 일치하는 세션 객체를 찾아서 setAttribute 한다 ket, value 형태로 이런식으로 세션 저장소를 사용한다. 왜 request를 쓰냐 요청 정보가 다 들어가있기 때문에 헤더에있는.
+		컨트롤러에서는 세션 저장소를 사용하고 싶으면 request.getSeesion();을 사용하면 된다. 
+		요청에 있는 일치하는 세션 객체를 찾아서 setAttribute 한다 key, value 형태로 이런식으로 세션 저장소를 사용한다. 
+		왜 request를 쓰냐? 요청 정보가 다 들어가있기 때문에 헤더에있는. request로 부터 세션 객체를 얻어오는 메서드가 들어있는것
 		
 	4.세션과 관련된 메서드
 		String getId()								세션의 id를 반환
-		long getLawstAccessedTime()					세션 내에서 최근 요청을 받은 시간을 반환
+		long getLastAccessedTime()					세션 내에서 최근 요청을 받은 시간을 반환
 		boolean isNew()								새로 생성된 세션인지를 반환. request.getSession()호출 후 사용
 		void invalidate()							세션 객체를 제거(저장된 객체도 함께) - 즉시종료 ex) 로그아웃!
 		void setMaxInactiveInterval(int interval)	지정된 시간(초)후에 세션을 종료(예약 종료)
@@ -37,25 +49,28 @@
 		
 		속성 관련 메서드
 		
-			void setAttribute(String name, Object value)	지정된 값(value)을 지정된 속성 이름(name)으로 저장
-			Object getAttribute(String name)				지정된 이름(name)으로 저장된 속성의 값을 반환
-			void removeAttribute(String name)				지정된 이름(name)의 속성을 삭제
-			Enumeration getAttributeNames()					기본 객체에 저장된 모든 속성의 이름을 반환
+		void setAttribute(String name, Object value)	지정된 값(value)을 지정된 속성 이름(name)으로 저장
+		Object getAttribute(String name)				지정된 이름(name)으로 저장된 속성의 값을 반환
+		void removeAttribute(String name)				지정된 이름(name)의 속성을 삭제
+		Enumeration getAttributeNames()					기본 객체에 저장된 모든 속성의 이름을 반환
 		
 	5.세션의 종료
 		1.수동 종료
 			HttpSession session = request.getSession();
 			session.invalidate();					1.세션을 즉시 종료
-			session.setMaxInactiveInterval(30*60);	2.세션을예약 종료(30분후)
+			session.setMaxInactiveInterval(30*60);	2.세션을예약 종료(30분후), 초단위
 			
 		2.자동 종료 - web.xml
 			<session-config>
-				<session-timeout>30</session-timeout>
+				<session-timeout>30</session-timeout> : 분단위
 			</session-config>
 		
-		즉 클라이언트의 요청과 요청사이의 시간이 30분이 넘으면 timeout! 서버에서 새로운 세션아이디 부여! session.invalidate()를 호출해도 새로운 세션 아이디 부여! 새로운 세션이 발급되면 기존의 저장소는 더이상 사용하지 못한다.
+		즉 클라이언트의 요청과 요청사이의 시간이 30분이 넘으면 timeout! 서버(응답)에서 새로운 세션아이디 부여! 
+		session.invalidate()를 호출해도 새로운 세션 아이디 부여! 새로운 세션이 발급되면 기존의 저장소는 더이상 사용하지 못한다.
 		
-		Standare Manager가 세션객체를 관리한다. 처음 요청이 오면 무조건 세션객체를 만들고 세션객체 아이디를 쿠키로 반환한다. 세션이 끝나면 Standare Manager가 세션객체를 자동으로 제거.
+		Standard Manager가 세션객체를 관리한다. 처음 요청이 오면 무조건 세션객체를 만들고 세션객체 아이디를 쿠키로 반환한다. 
+		세션이 끝나면 Standard Manager가 세션객체를 자동으로 제거.
+		오랜시간동안 서버에 남아있기에 서버 부담이 크다. 그래서 최소한의 데이터만 저장을 해야한다.
 		
 	6.쿠키 vs 세션
 		쿠키(Cookie)						세션(HttpSession)
@@ -63,15 +78,23 @@
 		서버에 부담 x						서버에 부담 o
 		보안에 불리							보안에 유리
 		서버 다중화에 유리					서버 다중화에 불리
-	
+		
+		작은곳은 서버가 한대, 이런경우에는 세션객체가 하나일때는 이곳에 세션을 저장해도 문제 없지만
+		서버가 여러곳인 경우(다중화가 되있는곳) 맨앞에 서버가 load-balancing을 해준다. 그러다 보면 할당해주는 곳마다 데이터가 다를 수 있으므로 서버 동기화가 필요
+		즉 그래서 서버 다중화에 불리하다.
+		
 	실습
-		Set-Cokkies 헤더가 JSESSIONID=~~라는 이름의 쿠키를 만들라는 헤더요청이다.
-		두번째 요청부터는 Request Headers에 Cookies JSESSIONID=~~ 가 계속 따라간다. 이걸 보고 서버가 각각의 요청이지만 같은 브라우저로부터 온 요청인것을 확인할 수 있다.
-		쿠키를 허용하지않는 브라우저에서는 요청 URL에 JSESSIONID가 함께 전송되도록한다. 쿠키가 허용되지 않기때문에 URL을 통해서 서버에서 알아낼 수 있다.
+		Set-Cookies 헤더가 JSESSIONID=~~라는 이름의 쿠키를 만들라는 헤더요청이다.
+		두번째 요청부터는 Request Headers에 Cookies JSESSIONID=~~ 가 계속 따라간다. 
+		이걸 보고 서버가 각각의 요청이지만 같은 브라우저로부터 온 요청인것을 확인할 수 있다.
+		쿠키를 허용하지않는 브라우저에서는 요청 URL 뒤에 JSESSIONID가 함께 전송되도록한다. 이렇게 하면 브라우저에서 쿠키를 허용안해도 괜찮다.
+		쿠키가 허용되지 않기때문에 URL을 통해서 서버에서 알아낼 수 있다.
 		
-		링크에는 꼭 c:url 태그를 사용해야만 쿠키를 허용하지않는 브라우저에서도 세션아이디를 서버에 전송할 수 있다.
+		form태그 action에는 꼭 c:url 태그를 사용해야만 쿠키를 허용하지않는 브라우저에서도 세션아이디를 서버에 전송할 수 있다.
 		
-		첫번째 요청에는 url에다가 JSESSIONID를 붙여서 보내준다. 왜냐하면 처음에는 그 브라우저가 세션, 쿠키를 허용하는지 안하는지 모르기 때문에! 처음에는 두번 JSESSIONID를 보내는것! 응답헤더와 url요청 두군데서 보내는것!
+		첫번째 요청에는 url에다가 JSESSIONID를 붙여서 보내준다. 왜냐하면 처음에는 그 브라우저가 세션, 쿠키를 허용하는지 안하는지 모르기 때문에! 
+		처음에는 두번 JSESSIONID를 보내는것! 응답헤더와 url요청 두군데서 보내는것!
 		
-		두번째부터는 url요청에 JSESSIONID가 안붙는다.
-		서버부담을 줄이는 방법이다!
+		두번째부터는 url요청에 JSESSIONID가 안붙는다. 요청헤드에 쿠키이름이 있으니까!
+		c:url 태그를 써야 쿠키를 허용안하는 사이트에서도 헤드를 줄일 수 있기 때문에 서버부담을 줄일 수 있다.
+		

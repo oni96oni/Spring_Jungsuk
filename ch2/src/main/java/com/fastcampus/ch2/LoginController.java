@@ -22,14 +22,17 @@ public class LoginController {
 	}
 	
 	@GetMapping("/logout")
-	public String logout(HttpSession session) {
+	public String logout(HttpSession session) {//HttpServletRequest request을 써도 되지만 이렇게 session을 써줘도 된다 스프링에서 넣어준다.
 		//1 . 세션을 종료
 		session.invalidate();
 		return "redirect:/";
 	}
 	
 	@PostMapping("/login")
-	public String login(String id, String pwd, String toURL, boolean rememberID, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String login(String id, String pwd, String toURL, boolean rememberId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		System.out.println("id = "+id);
+		System.out.println("pwd = "+pwd);
+		System.out.println("rememberId = "+rememberId);
 		// 1. id와 pwd를 확인
 		if(!loginCheck(id,pwd)) {
 			// 2-1. 일치하지 않으면, loginForm으로 이동
@@ -45,9 +48,9 @@ public class LoginController {
 		// 세션 객체에 id를 저장
 		session.setAttribute("id",id);
 		
-		if(rememberID) {
+		if(rememberId) {
 			//	1. 쿠키를 생성
-			Cookie cookie = new Cookie("id", id);
+			Cookie cookie = new Cookie("id", id); //id에 내가 id로 받은 값을 저장하는거니까 id저장하는것! id=asdf
 			// 	2. 응답에 저장
 			response.addCookie(cookie);
 		} else {

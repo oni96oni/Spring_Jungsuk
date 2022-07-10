@@ -3,7 +3,7 @@
 	
 	pom.xml에서 스프링버전 업그레이드
 
-	@RequestMapping(value="/register/save", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="/register/save", method=RequestMethod.GET)
 	@RequestMapping("/register/add")
 	@GetMapping("/register/add")
 	

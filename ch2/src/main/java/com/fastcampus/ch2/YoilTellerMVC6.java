@@ -24,7 +24,7 @@ public class YoilTellerMVC6 {
 	}
 	
     @RequestMapping("/getYoilMVC6") // http://localhost/ch2/getYoilMVC6
-//    public String main(@ModelAttribute("myDate") MyDate date, Model model) { 아래와 동일! ("myDate")을 생략하게되면 이 타입의 소문자를 첫글자로 하는게 키로 사용된다. 여기서는 MyDate가 생략됬으니까 myDate가 키가 될거에요~
+//    public String main(@ModelAttribute("myDate") MyDate date, Model model) { 아래와 동일! @ModelAttribute는 생략가능, 컨트롤러의 매개변수 타입 첫글자 소문자로 하는것 이전과 동일하다
     	public String main(MyDate date, BindingResult result) {
     	System.out.println("result = " + result);
         // 1. 유효성 검사

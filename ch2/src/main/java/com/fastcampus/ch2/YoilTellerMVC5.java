@@ -26,7 +26,7 @@ public class YoilTellerMVC5 {
     		return "yoilError";  // 유효하지 않으면, /WEB-INF/views/yoilError.jsp로 이동
     	
         // 2. 처리
-//    	char yoil = getYoil(date);
+//    	char yoil = getYoil(date); 코드가 필요없어진 이유 : @ModelAttribute가 반환타입에 붙은 메서드 불러서 model에 저장해버림
 
         // 3. Model에 작업 결과 저장
 //        model.addAttribute("myDate", date);

@@ -4,45 +4,60 @@ redirect와 forward
 		
 		redirect
 		클라이언트가 jsp 요청 -> 300번대응답? 은 redirect : 다른 url로 재요청하라는 의미이다. body없고 응답 header만 존재 
-		다른 url로 보낼 Location을 header에 갖고있음. 즉 요청은 2번! 1번은 수동(첫번째) 1번은 자동(두번째) 각자의 요청은 다른것! 
-		첫번째 요청이 GET이건 POST이건 간에 2번째 요청은 무조건 GET으로 요청된다. 요청도 2번, 응답도 2번
+		다른 url로 보낼 Location을 header에 갖고있음. 즉 요청은 2번! 한 번은 수동(첫번째) 한 번은 자동(두번째) 각자의 요청은 다른것! 
+		첫번째 요청이 GET이건 POST이건 간에 2번째 요청(redirect로 요청되는)은 무조건 GET으로 요청된다. 요청도 2번, 응답도 2번
 			관공서 전화돌리는것을 예시, 두번째 연결시켜준곳에서 다시 처음부터 요청해야하잖아
 		
 		forward
-		클라이언트가 요청을한다! -> jsp가 본인이 처리해야할것이 아니면 '전달'을해준다 사용자의 요구사항을 처리해야할 jsp에게!
+		클라이언트가 요청을한다! -> jsp가 본인이 처리해야할것이 아니면 '전달'을 요청을 해준다 사용자의 요구사항을 처리해야할 jsp에게!
 		request하고 response 같이 전달한다.
-		ex) 고객이 카드분실했다고 분실신고! 전화를함 그런데 받은 부서가 한도조회를 하는 부서여서 그 요구사항을 못들어줌 그런데 한도조회를 하는 부서가 그 요구사항을 분실신고부서에 전해주고 분실신고부서에서 응답을 해주는것! 
+		ex) 고객이 카드분실했다고 분실신고! 전화를함 그런데 받은 부서가 한도조회를 하는 부서여서 그 요구사항을 못들어줌 
+			그런데 한도조회를 하는 부서가 그 요구사항을 분실신고부서에 전해주고 분실신고부서에서 응답을 해주는것! 
 		클라이언트는 어떤 jsp가 처리했는지 알 수 없음! 그리고 요청 1번, 응답도 1번이다!
 		request 객체가 모델역할을 하고 있는것이다. 처음에 받은 한도조회부서가 Controller 역할을 분실신고부서가 View 역할을 수행한다고 보면된다.
 		MVC패턴을 여기서 볼 수 있다! 컨트롤러가 처리를하고 그 결과를 모델(request 객체)에 담아서 뷰한테 전달해주면 뷰가 그 모델을 받아서 최종 응답을 하는것!
 		
-	2.RedirectView
-		스프링에서는 디스페쳐 서블릿이 요청을 무조건 받아서 이 요청을 처리할 수 있는 컨트롤러의 메서드를 호출한다.
-		예시에서는 유효성 검사를 통과 못해서 문자열 리턴받았다 치면 컨트롤러가 디스페쳐 서블릿한테 문자열을 반환을 하고 디스페쳐 서블릿은 redirect:? ~~ 문자열을 확인하고 redirectview에게 전달을 한다.
-		스프링에서 redirectview는 응답헤더 만드는 역할(300번대)을 한다. 그러면 브라우저가 자동으로 Location에 적혀있는 url을 실행한다.
+	2.RedirectView(스프링에서 요청을 처리하는 방법)
+		클라이언트가 요청을 하면 스프링에서는 디스페쳐 서블릿이 요청을 무조건 받아서 이 요청을 처리할 수 있는 컨트롤러의 메서드를 호출한다.
+		예시에서는 유효성 검사를 통과 못해서 문자열 리턴받았다 치면 컨트롤러가 디스페쳐 서블릿한테 문자열을 반환을 하고 
+		디스페쳐 서블릿은 redirect:? ~~ 문자열을 확인하고 redirectview에게 전달을 한다.
+		스프링에서 redirectview는 응답헤더 만드는 역할(300번대)을 한다. 이 응답을 클라이언트가 받는다 
+		그러면 브라우저가 자동으로 Location에 적혀있는 url을 실행(재요청)한다.
 		컨트롤러는 응답헤더를 만들어서내서 클라이언트에게 응답한다.
 		
-	3.JstlView
-		레지스터에다가 요청 -> 디스페쳐서블릿이 받는다 -> 컨트롤러에게 요청을한다. -> 레지스터폼(뷰이름)을 다시 디스페쳐 서블릿이 받음 -> InternalResourceViewResolver에다가 뷰를 보낸다 -> InternalResourceViewResolver는 받은 뷰가 어떤 뷰인지 해석을 한다. -> jsp 파일로 디스페쳐 서블릿에게 반환을한다. ->  반환받은 jsp를 jstlView에게 보낸다. -> jstlView가 해당 jsp한테 Model을 넘겨준다. -> registerForm.jsp가 받은 데이터(model)을 가지고 최종 응답을 만들어서 응답을 한다.
+	3.JstlView(jsp뷰를 처리하는)
+		클라이언트 요청 -> 디스페쳐서블릿이 받는다 -> 컨트롤러에게 요청을한다. -> 레지스터폼(뷰이름)을 다시 디스페쳐 서블릿이 받음 
+		-> InternalResourceViewResolver에다가 뷰(문자열)를 보낸다 -> InternalResourceViewResolver는 받은 뷰가 어떤 뷰(실제파일이름)인지 해석을 한다. 
+		-> jsp 파일(경로까지 포함, ex:/WEB-INF/views/registerForm.jsp)로 디스페쳐 서블릿에게 반환을한다. ->  반환받은 jsp를 jstlView에게 보낸다. 
+		-> jstlView가 해당 jsp한테 Model을 넘겨준다. 
+		-> registerForm.jsp가 받은 데이터(model)을 가지고 최종 응답을 만들어서 응답을 한다.
 		JSTL은 jsp뷰를 처리하는곳 보통은 뷰 이름을 컨트롤러레지스터가 반환.
-		InternalResourceViewResolver는 servlet-context.xml에 설정되어 있다. 하는 역할은 디스페쳐서블릿으로 부터 뷰이름을 전달받으면 거기에 접두사 접미사를 설정된 대로 붙여주고 응답한다.
+		InternalResourceViewResolver는 servlet-context.xml에 설정되어 있다. 
+		하는 역할은 디스페쳐서블릿으로 부터 뷰이름을 전달받으면 거기에 접두사 접미사를 설정된 대로 붙여주고 응답한다.
 		
-	4.InternalResoutrceView
+	4.InternalResourceView
 		forward할때 사용되는뷰!
 		요청이 오면 디스페쳐서블릿이 받아서 해당 컨트롤러의 메서드를 호출한다. 반환값을 다시 디스페쳐 서블릿에게 전달을 해주는데 여기서는 예시가 forward로 시작
-		그러면 디스페쳐 서블릿이 반환되는 문자열을 확인하고 forward로 시작하니까 forwarding을 해주어야 하는구나 라고 생각을 하고 InternalResourceView에게 전달을 한다. InternalResourceView가 호출을 하고 디스페쳐서블릿에게 알려준다. 즉 내부적으로 forwarding 실행
-		디스페쳐 서블릿이 메서드를 호출을 하고 뷰이름을 받아서 이전과 똑같은 절차 진행
-		InternalResourceViewResolver.에게 물어보고 응답받고 해당 뷰를 jstlview에게 넘겨주고 jstlview가 해당 jsp를 호출을해서 호출받은 jsp가 최종적으로 클라이언트에게 응답!
+		그러면 디스페쳐 서블릿이 반환되는 문자열을 확인하고 forward로 시작하니까 forwarding을 해주어야 하는구나 라고 생각을 하고 
+		InternalResourceView에게 전달을 한다. InternalResourceView가 호출을 하고 디스페쳐서블릿에게 알려준다. 즉 내부적으로 forwarding 실행
+		사실 forwarding이나 클라이언트의 요청이나 똑같다! forwarding은 InternalResourceView가 처리하는것일 뿐!
+		포워딩으로 받은 url을 디스페쳐 서블릿이 메서드 호출을 하고 뷰이름을 받아서 이전과 똑같은 절차 진행
+		InternalResourceViewResolver에게 물어보고 응답받고 해당 뷰를 jstlview에게 넘겨주고 jstlview가 해당 jsp를 호출을해서(데이터도 같이 전달)
+		호출받은 jsp가 최종적으로 클라이언트에게 응답!
 		
 		
 	5.forward의 예시
 		어떨때 사용??
-		은행에서 1년치 입출금 내역을 출력하고싶다! -> 그걸 다운로드 받고싶어서 다운로드 요청 -> /download?type=pdf : pdf로 받을래 -> 타입에 따른 View를 만들어주는 View에게 넘겨준다 forward를
+		은행에서 1년치 입출금 내역을 출력하고싶다! -> 그걸 다운로드 받고싶어서 다운로드 요청 -> /download?type=pdf : pdf로 받을래 
+		-> 타입에 따른 View를 만들어주는 View에게 넘겨준다 forward를
 	
 	실습.	
-	redirect로 save로 요청을했는데 주소가 자동으로 add로 바뀌었다! 브라우저가 자동으로 바꿔준거야 , redirect는 알려준다 어디로 요청하세요~ 라고 그래서 브라우저 주소창이 바뀐거야.
+	redirect로 save로 요청을했는데 주소가 자동으로 add로 바뀌었다! 브라우저가 자동으로 바꿔준거야 , redirect는 알려준다 어디로 요청하세요~ 라고 
+	그래서 브라우저 알려준 url로 다시 요청을 하게된다. 그러고 다시 응답을 받아서 주소창에 응답주소가 바뀌는것
 	forward는 주소가 바뀌지 않는다! 클라이언트는 처음에 요청한 사람이 처리한줄 알기때문에
 	
-	POST메서드로 /ch2/register/save를 요청을 했는데 forward를 통해서 화면은 /register/add를 보여준다. 하지만 요청(url로 뜨는것)은 /ch2/register/save save로 보낸 요청을 add에게 forward! == 전달! 한거야
+	POST메서드로 /ch2/register/save를 요청을 했는데 forward를 통해서 화면은 /register/add를 보여준다. 그러면 add도 POST로 요청을 받게 되는데 forward는 메서드를 GET밖에 허용하지 않아
+	그래서 GET으로 바꾸어 주어야한다. view-controller는 GET밖에 받지못해 POST는 못받아
 	
+	요청(url로 뜨는것)은 /ch2/register/save! save로 보낸 요청을 add에게 forward! == 전달! 한거야
 	redirect와 달리 forward는 요청이 하나다!
