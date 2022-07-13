@@ -1,5 +1,8 @@
 세션(Session) - 실습
-	Home에서 Board(게시판) 클릭하면 BoardController에서 로그인여부 확인한 뒤에 되어 있으면 Board(게시판)으로 보내고 로그인이 되어있지 않으면 loginForm으로 보내서 로그인을 시키고 로그인 요청이 오면 LoginController에서 id, pwd일치하는지 확인을 한다음에 일치하지 않으면 다시 loginForm으로 보내고 일치하면은 홈 화면으로 다시 보낸다! 그런데 원래 가려고 했던곳은 Board(게시판)이다! 그래서 로그인 후에는 원래 가려고했던 게시판으로 보내주어야해! 코딩 ㄱㄱ
+	Home에서 Board(게시판) 클릭하면 BoardController에서 로그인여부 확인한 뒤에 되어 있으면 Board(게시판)으로 보내고 
+	로그인이 되어있지 않으면 loginForm으로 보내서 로그인을 시키고 로그인 요청이 오면 LoginController에서 id, pwd일치하는지 확인을 한다음에 
+	일치하지 않으면 다시 loginForm으로 보내고 일치하면은 홈 화면으로 다시 보낸다! 그런데 원래 가려고 했던곳은 Board(게시판)이다! 
+	그래서 로그인 후에는 원래 가려고했던 게시판으로 보내주어야해! 코딩 ㄱㄱ
 	
 	2.로그인 후, 게시판으로 이동
 		맨처음에 로그인이 아니라 Board를 눌렀다는것을 알아야 로그인하고 바로 보드로 보내줄 수 있다. 
@@ -14,8 +17,10 @@
 		request.getHeader("refer"): 는 from의 정보를 얻을 수 있다.
 		
 		이 정보를 GET/POST로 loginForm에게 정보를 보내고, 여기서 적절한것은 GET!
-		loginForm에다가는 히든인풋태그를 만들어 놓고 GET으로 받은 정보를 채우면 이 값이 같이 LoginController에게 간다!
+		loginForm에다가는 히든인풋태그를 만들어 놓고 GET으로 받은 정보를 채우고 로그인체크하면 이 값이 같이 LoginController에게 간다!
 		LoginController는 redirect하면은 게시판으로 바로가는것!!
+		
+		로그인폼에 hidden input태그를 넣어서 to:/board/list를 채워주어서 보드를 누른뒤 로그인하면 바로 보드로 가게하자
 		
 	3.세션을 시작할까? session="true" or session="false" ?
 		홈화면이나 로그인화면까지는 세션이 필요 없다. BoardController에서부터 로그인을 시도하면서 세션이 필요! 세션은 가능한 유지기간이 짧아야 좋다.
@@ -24,7 +29,8 @@
 		세션은 true가 디폴트값임 필요없는 페이지에는 false로 넣어주자.
 		
 		1.세션이 필요없는 jsp화면은 session="false"로 해라
-		2.★session="flase"가 기존 세션에 영향을 미치지 않는다! 세션이 끊어지는것이 아니라 시작할지말지 결정하는것이지 일단 세션이 시작한 다음에는 session이 true이든 false이든 상관없다.
+		2.★session="false"가 기존 세션에 영향을 미치지 않는다! 세션이 끊어지는것이 아니라 시작할지말지 결정하는것이지 일단 세션이 시작한 다음에는 
+		session이 true이든 false이든 상관없다.
 		
 		session="false"일 때, sessionScope와 pageContext.session은 사용이 불가하다
 		sessionScope.id를 pageContext.request.getSession(false).getAttribute("id")로 변경해야함 STS에서 에러라고 표시해도 무시하면됨
