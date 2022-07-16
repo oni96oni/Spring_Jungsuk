@@ -5,30 +5,40 @@
 		boolean supports(Class<?> clazz);
 			이 검증기로 검증가능한 객체인지 알려주는 메서드
 		void validate(Object target, Errors errors);
-			target = 검증할 객체, errors = 검증하다 발생한 에러를 저장하는곳
+			target = 검증할 객체, errors = 검증하다 발생한 에러를 저장하는곳, 실제로 검증하는 메서드
 		
+		BindingResult는 Errors의 자손인터페이스
+		isAssignableFrom은 clazz가 User또는 그 자손인지 확인, 그냥 equals를 써도 무관하다.
+		
+		원래는 instance of 를 사용해야 하지만 위에 supports메서드가 이미 사용가능한지 검증을 하므로 생략가능해서 생략
+				
 		Errors 인터페이스에는 
 		void reject(String errorCode); -> 객체 전체에 대한 에러를 저장할때
 		void rejectValue(String field, String errorCode); -> 어떤 필드(iv)에대한 에러를 저장할때
 		
 	7.Validator를 이용한 검증 - 수동
-		컨트롤러내의 메서드에다 검증하는 코드를 작성. 이 부분을 별도로 분리하였다! 그게 바로 Validator! 그 다음부터는 그냥 Validator객체를 생성하고 
-		메서드를 실행시키면 끝.
+		컨트롤러내의 메서드에다 검증하는 코드를 작성. 이 부분을 별도로 분리하였다! 검증이라는 관심사를 그게 바로 Validator! 
+		그 다음부터는 그냥 Validator객체를 생성하고 메서드를 실행시키면 끝.
+		검증하고 나면 result에 에러가 있는지 확인
 		
 	8.Validator를 이용한 검증 - 자동
-		기존의 코드를 @InitBinder를 이용해서 Validator 등록을 해준다. 검증할 객체 앞에다가 @Valid른 애너테이션을 붙이면 자동으로 검증한다!
+		기존의 코드를 @InitBinder를 이용해서 Validator 등록을 해준다.
+		validator를 WebDataBinder에 등록
+		검증할 객체 앞에다가 @Valid른 애너테이션을 붙이면 자동으로 검증한다!
 		
 	9.글로벌 Validator
 		하나의 컨트롤러에서만 작동하는 검증기말고 전체의 컨트롤러에서 작동하는 검증기를 만들기 위해서는
 		하나의 Validator로 여러 객체를 검증할 때, 글로벌 Validator로 등록하면된다.
 		
 		글로벌 Validator로 등록하는 방법
-		servlet-context.xml파일에 
+		servlet-context.xml파일에 빈등록을한다! 등록한 빈을 validator태그의 속성으로 지정해주면은 등록이되는것
+		
 			<annotation-driven validator="globalValidator"/>
 			<beans:bean id="globalValidator" class="com.fastcampus.ch2.GlobalValidator"/>
 		
 		글로벌 Validator와 로컬 Validator를 동시에 적용하는 방법
-		컨트롤러 안에다가 @InitBinder가 붙은 메서드를 만들고 그 안에 addValidators에 로컬 Validator를 추가해준다. ( 글로벌 validator 안에다가 로컬을 추가하는 것이어서 set이 아니라 add를 써야한다)
+		컨트롤러 안에다가 @InitBinder가 붙은 메서드를 만들고 그 안에 addValidators(new UserValidatort()) 실행 - validator를 WebDataBinder에 등록
+		(글로벌 validator 안에다가 로컬을 추가하는 것이어서 set이 아니라 add를 써야한다)
 			
 		BindingResult는 Errors인터페이스의 자손이다. 
 	
@@ -37,16 +47,36 @@
 		
 		valid는 api다운받아와서 사용!
 		
+		required라고 에러메시지를 저장하면 여러개의 에러메시지가 한번에 저장된다.
+		default메세지를 넣기보다 따로 파일을 관리하는편이다 하드코딩이 되어버리기 때문에!
+		
 		setValidator를 쓰면 globalValidator를 안쓰게 된다.
 		
+		
 	10.MessageSource
+		콘솔에만 찍지말고 사용자 화면에도 찍어줘야 무엇을 잘못했는지 알기때문에 이것을 보여주려면!
 		다양한 리소스에서 메시지를 읽기 위한 인터페이스
 		단순히 getMessage이다.
 		
+			String getMessage(String code, Object[] args, String defaultMessage, Locale locale);
+			String getMessage(String code, Object[] args, Locale locale) throws NoSuchMessageException;
+			String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException;
+		
+			메시지에 사용할 값들을 넣어주는게 Object[] args이다.
+			해당메시지를 못찾았을때 보여주는 메시지가 디폴트메시지
+			
 		(1) 프로퍼티 파일을 메시지 소스로하는 ResourceBundleMessageSource를 등록
 		servlet-context.xml에 추가
 		
 		(2) error_message.properties 파일을 만들어야한다.
+		error_message.properties가 디폴트이고 국가별로 만들어져 있을 수 있다. (Locale locale 객체가 지역정보이다 시스템으로부터 정보를 얻는다.)
+		
+		field를 찾을때 "id"를 찾는다 치면 검색할때
+			1.required.user.id
+			2.required.id
+			3.required.java.lang.String
+			4.required
+		이렇게 찾는다.
 		
 	11.검증 메시지의 출력
 		스프링이 제공하는 커스텀 태그 라이브러리를 사용해야한다.
@@ -54,5 +84,4 @@
 		<form>대신 <form:form> 사용
 		<form:errors>로 에러를 출력. path에 에러 발생 필드를 지정.(*은 모든 필드의 에러)
 				
-		
 		

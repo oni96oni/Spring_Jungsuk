@@ -25,8 +25,8 @@ public class RegisterController {
 //		ConversionService conversionService = binder.getConversionService();
 //		System.out.println("conversionService = " + conversionService);
 //		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-//		binder.registerCustomEditor(Date.class, new CustomDateEditor(df,false));
-		binder.registerCustomEditor(String[].class, new StringArrayPropertyEditor("#"));
+//		binder.registerCustomEditor(Date.class, new CustomDateEditor(df,false)); 주어진 형태로 문자열이 들어오면 Date값으로 변경
+		binder.registerCustomEditor(String[].class, new StringArrayPropertyEditor("#")); //구분자 #으로 구분해서 나눠서 저장해준다.
 //		binder.setValidator(new UserValidator()); // UserValidator를 WebDataBinder의 로컬 validator로 등록
 //		binder.addValidators(new UserValidator());
 		List<Validator> validatorList = binder.getValidators();
@@ -46,14 +46,14 @@ public class RegisterController {
 		
 		// 수동 검증 - Validator를 직접 생성하고, validate()를 직접 호출
 //		UserValidator userValidator = new UserValidator();
-//		userValidator.validate(user, result);
+//		userValidator.validate(user, result); BindingResult는 Errors의 자손
 		
 		//User객체를 검증한 결과 에러가 있으면, registerForm을 이용해서 에러를 보여줘야한다.
 		if(result.hasErrors()) {
 			return "registerForm";
 		}
 		
-//		// 1. 유효성 검사
+//		// 1. 유효성 검사 --> 이 부분을 컨트롤러 메서드안에서 처리하지 않고 validator를 만들어서 사용!!
 //		if(!isValid(user)) {
 //			String msg = URLEncoder.encode("id를 잘못 입력하셨습니다.", "utf-8");
 //			

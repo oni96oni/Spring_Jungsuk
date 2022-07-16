@@ -65,7 +65,8 @@
     <title>Register</title>
 </head>
 <body>
-<!--<form action="<c:url value="/register/save"/>" method="post" onsubmit="return formCheck(this)">  --> 
+<!--<form action="<c:url value="/register/save"/>" method="post" onsubmit="return formCheck(this)"> 이거 대신 스프링이 제공하는 태그
+를 사용한다! 바로아래 --> 
    <form:form modelAttribute="user">
     <div class="title">Register</div>
     <div id="msg" class="msg"><form:errors path="id"/></div> 
