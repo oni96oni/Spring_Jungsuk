@@ -17,7 +17,7 @@ public class ExceptionController {
 	public String catcher(Exception ex, Model m) {
 		System.out.println("catcher() in ExceptionController ");
 		System.out.println("m="+m);
-//		m.addAttribute("ex", ex);
+//		m.addAttribute("ex", ex); 이부분은 jsp에 에러처리할때 쓰는 뷰라 지정해주었기때문에 괜찮다.
 		return "error";
 	}
 	

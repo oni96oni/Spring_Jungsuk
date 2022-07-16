@@ -3,21 +3,22 @@
 		예외 처리를 위한 메서드를 작성하고 @ExceptionHandler를 붙인다.
 		
 		컨트롤러 안에 예외가 발생했을때 이 예외를 처리할 메서드를 같은 컨트롤러 안에 만들 수 있다.
-			이 메서드는 @ExceptionHandler( 처리할 예외 ) 애너테이션을 붙인다.
+			이 메서드는 @ExceptionHandler( 처리할 예외, 여러개 지정할때는 {}을 추가로 사용 ) 애너테이션을 붙인다.
 		
-		<%@page isErrorpage='true'> 발생한 예외를 exception이용해서 쓸 수 있다.
+		jsp page에 속성중에 <%@page isErrorpage='true'>가 있는데 발생한 예외를 exception이용해서 쓸 수 있다.
 		
-		@ControllerAdivce로 전역(모든 컨트롤러) 예외 처리 클래스 작성 가능(패키지 지정 가능)
+		@ControllerAdvice로 전역(모든 컨트롤러) 예외 처리 클래스 작성 가능(패키지 지정 가능)
 		예외 처리 메서드가 중복된 경우, 컨트롤러 내의 예외 처리 메서드가 우선! ( 가까운 예외 처리 메서드가 처리 한다. )
 		별도의 클래스를 만들면 모든 예외처리를 가능!
 		
 	2.@ResponseStatus
-		(1) 응답 메시지의 상태코드를 변경할 때 사용하는 에너테이션이다!
-		예외처리 메서드 앞에다가 붙인다! 응답 코드를 변경 가능해.
-		ex) 상태코드 200번대 -> 에러! -> 200번 대신에 400번 or 500번대로 바꾸어주어야한다. 예외를 처리했는데 요청처리 성공했다고 보여주면 안되니까!
+		응답 메시지의 상태코드를 변경할 때 사용하는 에너테이션이다!
+		
+		(1) 예외처리 메서드 앞에다가 붙인다! 응답 코드를 변경 가능해.
+			ex) 상태코드 200번대 -> 에러! -> 200번 대신에 400번 or 500번대로 바꾸어주어야한다. 예외를 처리했는데 요청처리 성공했다고 보여주면 안되니까!
 		
 		(2) 사용자 정의 예외 클래스 만들때 앞에다가 쓴다!
-		표시해줄 상태코드를 변경하고자 할때! 디폴트 값에서 우리가 정한 상태코드를 보여준다.
+			표시해줄 상태코드를 변경하고자 할때! 디폴트 값에서 우리가 정한 상태코드를 보여준다.
 		
 		200번대, 300번대에도 사용할 수 있음! 다양하지만 우리는 일단 (1),(2)에 집중하자!
 		
@@ -26,8 +27,10 @@
 		@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) // 200 -> 500 으로 상태코드를 변경! 내가 보여지길 원하는걸로 변경이 가능하다
 		
 		에러처리시 보여주는 view파일 첫번째줄에다가 isErrorPage="true"를 추가해주면 이 페이지는 에러가 났을때 보여주는 페이지란걸 설정하는것!
-		예외를 뷰에 전달할 필요가 없다! 전달안해도 바로 쓸 수 있으니까!
+		예외를 뷰에 전달할 필요가 없다! 모델 전달안해도 바로 쓸 수 있으니까! 그래서 m.addAttribute 생략
 		뷰 에다가는 exception이라는 기본객체를 쓸때에는 문법적으로 pageContext를 붙여주어야 한다!
+		
+		예외처리 성공하고 적절한 상태코드를 나타내도록 설정해주어야 한다.
 		
 	3.<error-page> - web.xml
 		상태 코드별 뷰 맵핑
@@ -41,9 +44,9 @@
 		이런식으로 추가 가능하다! 예외가 처리되지 않은 부분에대해서는 톰캣이 가지고있던 디폴트 페이지 대신에 보여줄것을 설정하는것!
 		
 	4.SimpleMappingExceptionResolver
-		예외 종류별 뷰 맵핑에 사용. servlet-context.xml에 등록
+		예외 종류별 뷰 맵핑에 사용. servlet-context.xml에 등록, 예외종류하고 에러뷰를 연결
 		
-		즉! 3번방식은 예외 번호별로 jsp를 맵핑
+		즉! 3번방식은 상태 코드 별로 jsp를 맵핑
 		4번방식은 예외 종류하고 에러뷰를 맵핑
 		
 		isErrorPage="true"라고 jsp파일에 적혀져 있으면 기존에 설정해 놓은것들을 무시하고 상태코드를 500번으로 강제로 바꾼다!
@@ -55,7 +58,10 @@
 		여기서 한단계 위에 있는 tmp()에 있는 폴더중 work 폴더 -> jsp파일이 서블릿으로 변환되고, 서블릿이 다시 컴파일 된 결과가 저장되는 곳!
 		
 	5.ExceptionResolver
-		클라이언트가 요청을 보내면 DispatcherServlet이 받고 해당하는 컨트롤러에게 보여준다! 이 과정에서 컨트롤러에서 예외가 발생하면 이 예외를 컨트롤러에서 try/catch로 처리할 수도 있지만 없다면 예외가 자신을 호출한 쪽으로 전달이됨! DispatcherServlet이 받으면 예외를 처리하려고 handlerExceptionResolver를 살펴본다. DispatcherServlet은 이 예외를 처리하기 위한 기본 전략들을 가지고 있다. 기본적으로 3개가 등록이 되어있다.
+		클라이언트가 요청을 보내면 DispatcherServlet이 받고 해당하는 컨트롤러에게 보여준다! 이 과정에서 컨트롤러에서 예외가 발생하면 
+		이 예외를 컨트롤러에서 try/catch로 처리할 수도 있지만 없다면 예외가 자신을 호출한 쪽으로 전달이됨! 
+		DispatcherServlet이 받으면 예외를 처리하려고 handlerExceptionResolver를 살펴본다. 
+		DispatcherServlet은 이 예외를 처리하기 위한 기본 전략들을 가지고 있다. 기본적으로 3개가 등록이 되어있다.
 			
 			DispatcherServlet.properties에 가면 확인할 수 있다.
 			org.springframework.web.servlet.HandlerExceptionResolver=org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver,\
