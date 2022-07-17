@@ -1,0 +1,6 @@
+Import와 Export
+	export할때는 Archive file로 export합니다.
+	
+	import할때는 existing Projects into Workspace로 import합니다.
+	
+	
